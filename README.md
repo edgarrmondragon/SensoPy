@@ -1,5 +1,5 @@
 # SensoPy
-Python library for the design and analysis of sensory discrimination tests.
+Python library for the design and analysis of sensory discrimination tests. I have plans to make this a full-fledged sensory data analysis library by including all common standard techniques (Preference Mapping, Penalty Analysis, DOE, etc.)
 
 ## Installation
 
