@@ -1,4 +1,3 @@
-from .methods import *
 
 __author__ = "Edgar Ramirez Mondragon"
 __copyright__ = None

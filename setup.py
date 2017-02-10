@@ -8,4 +8,5 @@ setup(name='sensopy',
       description='TODO',
       author='Edgar Ramírez',
       author_email='typingmonkey9201@gmail.com',
-      packages=['sensopy'])
+      # py_modules=['sensopy'])
+      packages=['sensopy', 'sensopy.discrim'])

@@ -2,7 +2,7 @@ import numpy as np
 import scipy.special
 from scipy.integrate import trapz
 from scipy.stats import norm
-import mplusn
+from . import mplusn
 
 
 class DiscriminationMethod(object):

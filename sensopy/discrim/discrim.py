@@ -3,7 +3,7 @@ from scipy.stats import binom, beta
 from scipy.optimize import fsolve
 from scipy.misc import derivative
 from collections import namedtuple
-import methods
+from . import methods
 
 
 TestResults = namedtuple('TestResults', ["pg", "pc", "pd", "dprime", "pvalue", "alpha", "power"])
