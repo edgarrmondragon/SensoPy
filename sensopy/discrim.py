@@ -18,6 +18,8 @@ class DiscriminationTest():
         
     def difference(self, x, n, pd0=0, conf_level=0.95):
         """      
+        Difference one-tailed test
+        
              pc <= pc0
         H0:  pd <= pd0
              d' <= d'0
@@ -65,6 +67,8 @@ class DiscriminationTest():
         
     def equivalence(self, x, n, pd0=0, conf_level=0.95):
         """      
+        Equivalence one-tailed test
+        
              pc >= pc0
         H0:  pd >= pd0
              d' >= d'0
