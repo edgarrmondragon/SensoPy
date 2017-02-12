@@ -5,7 +5,7 @@ import sensopy
 
 setup(
     name = 'sensopy',
-    packages = ['sensopy', 'sensopy.discrim']
+    packages = ['sensopy', 'sensopy.discrim'],
     version = sensopy.__version__,
     description = 'Python library for the design and analysis of sensory discrimination tests.',
     author = 'Edgar Ramírez',
