@@ -3,7 +3,7 @@ Python library for the design and analysis of sensory discrimination tests. I ha
 
 ## Installation
 
-TODO: Describe the installation process
+`pip install sensopy`
 
 ## Usage
 
