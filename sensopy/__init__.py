@@ -1,3 +1,4 @@
+from discrim import *
 
 __author__ = "Edgar Ramirez Mondragon"
 __copyright__ = None
