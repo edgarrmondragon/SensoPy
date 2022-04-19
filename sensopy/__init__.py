@@ -1,9 +1,13 @@
+"""Top-level package for SensoPy."""
 
-__author__ = "Edgar Ramirez Mondragon"
-__copyright__ = None
-__credits__ = ["Edgar Ramirez Mondragon"]
-__license__ = "GPL"
-__version__ = "0.0.1"
-__maintainer__ = "Edgar Ramirez"
-__email__ = "typingmonkey9201@gmail.com"
-__status__ = "Development"
+from __future__ import annotations
+
+import sys
+
+if sys.version_info >= (3, 8):
+    from importlib.metadata import version
+else:
+    from importlib_metadata import version
+
+__version__ = version(__name__)
+"""Package version"""

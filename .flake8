@@ -1,0 +1,8 @@
+[flake8]
+select = C,D,DAR,E,F,W
+ignore = ANN101,ANN202
+docstring-convention = google
+max-line-length = 88
+allow-star-arg-any = true
+per-file-ignores =
+    tests/*:DAR
