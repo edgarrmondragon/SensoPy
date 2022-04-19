@@ -36,7 +36,7 @@ def tests(session: Session) -> None:
             session.notify("coverage", posargs=[])
 
 
-@session(python=python_versions[1])
+@session(python=python_versions[0])
 def coverage(session: Session) -> None:
     """Upload coverage data."""
     args = session.posargs or ["report"]
