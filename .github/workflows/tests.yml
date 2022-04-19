@@ -61,6 +61,5 @@ jobs:
         nox --version
 
     - name: Run Nox
-      env:
       run: |
         nox --python=${{ matrix.python-version }}
