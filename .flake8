@@ -6,3 +6,4 @@ max-line-length = 88
 allow-star-arg-any = true
 per-file-ignores =
     tests/*:DAR
+    noxfile.py:ANN,DAR
