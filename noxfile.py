@@ -20,7 +20,7 @@ except ImportError:
 
 package = "sensopy"
 python_versions = ["3.10", "3.9", "3.8"]
-locations = "sensopy", "tests", "noxfile.py"
+locations = "src", "tests", "noxfile.py"
 nox.options.sessions = ("tests",)
 
 

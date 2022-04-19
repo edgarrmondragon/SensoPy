@@ -34,7 +34,7 @@ importlib_metadata = {version = ">=1.6,<5.0", python = "<3.8"}
 pytest = "^7.1.1"
 
 [tool.coverage.paths]
-source = ["sensory", "*/site-packages"]
+source = ["src", "*/site-packages"]
 
 [tool.coverage.run]
 branch = true
@@ -59,7 +59,7 @@ add_imports = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "-vvv -m 'not slow' --durations=3"
+addopts = "-vvv -m 'not slow'"
 markers = [
     "slow: Slow tests tests.",
 ]
