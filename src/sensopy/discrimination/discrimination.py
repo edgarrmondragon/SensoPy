@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Any, NamedTuple
+from typing import NamedTuple
 
 import numpy as np
 from scipy.misc import derivative
 from scipy.optimize import fsolve
 from scipy.stats import beta, binom
 
-from . import methods
+from .methods import DiscriminationMethod
 
 
 class Statistic(NamedTuple):
@@ -36,15 +36,14 @@ class TestResults(NamedTuple):
 class DiscriminationTest:
     """A one-tailed test for the difference in performance between two groups."""
 
-    def __init__(self, method: str, **kwargs: Any) -> None:
+    def __init__(self, method: DiscriminationMethod) -> None:
         # def __init__(self, correct, panelists, ):
         """Initialize a discrimination test.
 
         Args:
             method: The discrimination method to use.
-            kwargs: Additional arguments to pass to the method.
         """
-        self.method = methods.METHOD[method](**kwargs)
+        self.method = method
 
     def limits(
         self,

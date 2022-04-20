@@ -5,32 +5,44 @@ from __future__ import annotations
 import pytest
 
 from sensopy import DiscriminationTest
+from sensopy.discrimination.methods import (
+    DiscriminationMethod,
+    DualPairMethod,
+    DuoTrioMethod,
+    FourAFCMethod,
+    MPlusNMethod,
+    MultipleAFCMethod,
+    SpecifiedTetradMethod,
+    ThreeAFCMethod,
+    TriangleMethod,
+    TwoAFCMethod,
+    UnspecifiedTetrad,
+)
 
 
 @pytest.mark.parametrize(
-    "method,method_kwargs,correct,panelists",
+    "method,correct,panelists",
     [
-        ("triangle", {}, 19, 30),
-        ("two_afc", {}, 19, 30),
-        ("three_afc", {}, 19, 30),
-        ("four_afc", {}, 19, 30),
-        ("m_afc", {"m": 10}, 19, 30),
-        ("stetrad", {}, 19, 30),
-        ("utetrad", {}, 19, 30),
-        ("dualpair", {}, 19, 30),
-        ("duotrio", {}, 19, 30),
-        (pytest.param("mplusn", {"m": 4, "n": 3}, 19, 30, marks=pytest.mark.slow)),
+        (TriangleMethod(), 19, 30),
+        (TwoAFCMethod(), 19, 30),
+        (ThreeAFCMethod(), 19, 30),
+        (FourAFCMethod(), 19, 30),
+        (MultipleAFCMethod(10), 19, 30),
+        (SpecifiedTetradMethod(), 19, 30),
+        (UnspecifiedTetrad(), 19, 30),
+        (DualPairMethod(), 19, 30),
+        (DuoTrioMethod(), 19, 30),
+        (pytest.param(MPlusNMethod(4, 3), 19, 30, marks=pytest.mark.slow)),
         (
             pytest.param(
-                "mplusn",
-                {"m": 4, "n": 3, "specified": True},
+                MPlusNMethod(4, 3, specified=True),
                 19,
                 30,
                 marks=pytest.mark.slow,
             )
         ),
-        (pytest.param("mplusn", {"m": 2, "n": 2}, 19, 30, marks=pytest.mark.slow)),
-        (pytest.param("mplusn", {"m": 3, "n": 3}, 19, 30, marks=pytest.mark.slow)),
+        (pytest.param(MPlusNMethod(2, 2), 19, 30, marks=pytest.mark.slow)),
+        (pytest.param(MPlusNMethod(3, 3), 19, 30, marks=pytest.mark.slow)),
     ],
     ids=[
         "triangle",
@@ -49,20 +61,17 @@ from sensopy import DiscriminationTest
     ],
 )
 def tests_discrimination(
-    method: str,
-    method_kwargs: dict,
+    method: DiscriminationMethod,
     correct: int,
     panelists: int,
 ) -> None:
     """Test the discrimination protocols."""
-    test = DiscriminationTest(method, **method_kwargs)
+    test = DiscriminationTest(method)
 
     t1 = test.difference(correct, panelists)
-    assert t1.pg == pytest.approx(test.method.guessing)
     assert t1.pc.estimate == pytest.approx(correct / panelists)
     # assert t1.p_value < t1.alpha
 
     t2 = test.equivalence(correct, panelists)
-    assert t2.pg == pytest.approx(test.method.guessing)
     assert t2.pc.estimate == pytest.approx(correct / panelists)
     # assert t2.p_value > 0.95

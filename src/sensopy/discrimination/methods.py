@@ -54,7 +54,7 @@ class DiscriminationMethod(metaclass=ABCMeta):
         return (pc - pg) / (1 - pg)
 
 
-class Triangle(DiscriminationMethod):
+class TriangleMethod(DiscriminationMethod):
     """Triangle method.
 
     The Triangular (Triangle) method (Dawson and Harris 1951, Peryam 1958):
@@ -102,7 +102,7 @@ class Triangle(DiscriminationMethod):
         return 1 / 3
 
 
-class TwoAFC(DiscriminationMethod):
+class TwoAFCMethod(DiscriminationMethod):
     """Two-Alternative Forced-Choice method.
 
     The Two-Alternative Forced Choice (2-AFC) method (Green and Swets 1966):
@@ -140,7 +140,7 @@ class TwoAFC(DiscriminationMethod):
         return 1 / 2
 
 
-class ThreeAFC(DiscriminationMethod):
+class ThreeAFCMethod(DiscriminationMethod):
     """Three-Alternative Forced-Choice method.
 
     The Three-Alternative Forced Choice (3-AFC) method (Green and Swets 1966):
@@ -185,7 +185,7 @@ class ThreeAFC(DiscriminationMethod):
         return 1 / 3
 
 
-class FourAFC(DiscriminationMethod):
+class FourAFCMethod(DiscriminationMethod):
     """Four-Alternative Forced-Choice method.
 
     The Four-Alternative Forced Choice (4-AFC) method (Swets 1959):
@@ -230,7 +230,7 @@ class FourAFC(DiscriminationMethod):
         return 1 / 4
 
 
-class MAFC(DiscriminationMethod):
+class MultipleAFCMethod(DiscriminationMethod):
     """m-Alternative Forced-Choice method."""
 
     def __init__(self, m: int) -> None:
@@ -271,7 +271,7 @@ class MAFC(DiscriminationMethod):
         return 1 / self.m
 
 
-class SpecifiedTetrad(DiscriminationMethod):
+class SpecifiedTetradMethod(DiscriminationMethod):
     """Specified Tetrad method.
 
     The Specified Tetrad method (Wood 1949):
@@ -362,7 +362,7 @@ class UnspecifiedTetrad(DiscriminationMethod):
         return 1 / 3
 
 
-class DualPair(DiscriminationMethod):
+class DualPairMethod(DiscriminationMethod):
     """Dual Pair method.
 
     The Dual Pair (4IAX) method (Macmillan et al. 1977):
@@ -398,7 +398,7 @@ class DualPair(DiscriminationMethod):
         return 1 / 2
 
 
-class DuoTrio(DiscriminationMethod):
+class DuoTrioMethod(DiscriminationMethod):
     """Duo-Trio method.
 
     The Duo-Trio method (Dawson and Harris 1951, Peryam 1958):
@@ -438,7 +438,7 @@ class DuoTrio(DiscriminationMethod):
         return 1 / 2
 
 
-class MplusN(DiscriminationMethod):
+class MPlusNMethod(DiscriminationMethod):
     """M+N method.
 
     The “M + N” method (Lockhart 1951):
@@ -499,14 +499,14 @@ class MplusN(DiscriminationMethod):
 
 
 METHOD: dict[str, type[DiscriminationMethod]] = {
-    "triangle": Triangle,
-    "two_afc": TwoAFC,
-    "three_afc": ThreeAFC,
-    "four_afc": FourAFC,
-    "duotrio": DuoTrio,
-    "dualpair": DualPair,
+    "triangle": TriangleMethod,
+    "two_afc": TwoAFCMethod,
+    "three_afc": ThreeAFCMethod,
+    "four_afc": FourAFCMethod,
+    "duotrio": DuoTrioMethod,
+    "dualpair": DualPairMethod,
     "utetrad": UnspecifiedTetrad,
-    "stetrad": SpecifiedTetrad,
-    "m_afc": MAFC,
-    "mplusn": MplusN,
+    "stetrad": SpecifiedTetradMethod,
+    "m_afc": MultipleAFCMethod,
+    "mplusn": MPlusNMethod,
 }
