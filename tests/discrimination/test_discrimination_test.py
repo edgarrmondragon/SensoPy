@@ -5,8 +5,7 @@ from __future__ import annotations
 import pytest
 
 from sensopy import DiscriminationTest
-from sensopy.discrimination.methods import (
-    DiscriminationMethod,
+from sensopy.discrimination import (
     DualPairMethod,
     DuoTrioMethod,
     FourAFCMethod,
@@ -18,6 +17,7 @@ from sensopy.discrimination.methods import (
     TwoAFCMethod,
     UnspecifiedTetrad,
 )
+from sensopy.discrimination.methods import DiscriminationMethod
 
 
 @pytest.mark.parametrize(
