@@ -6,7 +6,7 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 
 import numpy as np
 import scipy.special
-from scipy.integrate import trapz
+from scipy.integrate import trapezoid
 from scipy.stats import norm
 
 from . import mplusn
@@ -88,7 +88,7 @@ class Triangle(DiscriminationMethod):
 
         x = np.linspace(0, 200, 10000)
         y = _fi(x)
-        i = trapz(y, x)
+        i = trapezoid(y, x)
 
         return i
 
@@ -171,7 +171,7 @@ class ThreeAFC(DiscriminationMethod):
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
-        i = trapz(y, x)
+        i = trapezoid(y, x)
 
         return i
 
@@ -216,7 +216,7 @@ class FourAFC(DiscriminationMethod):
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
-        i = trapz(y, x)
+        i = trapezoid(y, x)
 
         return i
 
@@ -257,7 +257,7 @@ class MAFC(DiscriminationMethod):
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
-        i = trapz(y, x)
+        i = trapezoid(y, x)
 
         return i
 
@@ -303,7 +303,7 @@ class SpecifiedTetrad(DiscriminationMethod):
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
-        i = trapz(y, x)
+        i = trapezoid(y, x)
 
         return 1 - i
 
@@ -348,7 +348,7 @@ class UnspecifiedTetrad(DiscriminationMethod):
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
-        i = trapz(y, x)
+        i = trapezoid(y, x)
 
         return 1 - i
 
