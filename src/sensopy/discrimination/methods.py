@@ -55,7 +55,15 @@ class DiscriminationMethod(metaclass=ABCMeta):
 
 
 class Triangle(DiscriminationMethod):
-    """Triangle method."""
+    """Triangle method.
+
+    The Triangular (Triangle) method (Dawson and Harris 1951, Peryam 1958):
+
+    Three samples of two products, A and B, are presented to each panelist. Two of them
+    are the same. The possible sets of samples are AAB, ABA, BAA, ABB, BAB, and BBA.
+    The panelist is asked to select the odd sample. The panelist is required to select
+    one sample even if he or she cannot identify the odd one.
+    """
 
     def __init__(self) -> None:
         """Initialize a triangle method."""
@@ -95,7 +103,17 @@ class Triangle(DiscriminationMethod):
 
 
 class TwoAFC(DiscriminationMethod):
-    """Two-Alternative Forced-Choice method."""
+    """Two-Alternative Forced-Choice method.
+
+    The Two-Alternative Forced Choice (2-AFC) method (Green and Swets 1966):
+
+    This method is also called the paired comparison method (Dawson and Harris 1951,
+    Peryam 1958). With this method, the panelist receives a pair of coded samples,
+    A and B, for comparison on the basis of some specified sensory characteristic.
+    The possible pairs are AB and BA. The panelist is asked to select the sample with
+    the strongest (or weakest) sensory characteristic. The panelist is required to
+    select one even if he or she cannot detect the difference.
+    """
 
     def __init__(self) -> None:
         """Initialize a 2-AFC discrimination method."""
@@ -123,7 +141,16 @@ class TwoAFC(DiscriminationMethod):
 
 
 class ThreeAFC(DiscriminationMethod):
-    """Three-Alternative Forced-Choice method."""
+    """Three-Alternative Forced-Choice method.
+
+    The Three-Alternative Forced Choice (3-AFC) method (Green and Swets 1966):
+
+    Three samples of two products, A and B, are presented to each panelist. Two of them
+    are the same. The possible sets of samples are AAB, ABA, BAA or ABB, BAB, BBA.
+    The panelist is asked to select the sample with the strongest or the weakest
+    characteristic. The panelist has to select a sample even if he or she cannot
+    identify the one with the strongest or the weakest sensory characteristic.
+    """
 
     def __init__(self) -> None:
         """Initialize a 3-AFC discrimination method."""
@@ -159,7 +186,16 @@ class ThreeAFC(DiscriminationMethod):
 
 
 class FourAFC(DiscriminationMethod):
-    """Four-Alternative Forced-Choice method."""
+    """Four-Alternative Forced-Choice method.
+
+    The Four-Alternative Forced Choice (4-AFC) method (Swets 1959):
+
+    Four samples of two products, A and B, are presented to each panelist. Three of
+    them are the same. The possible sets of samples are AAAB, AABA, ABAA, BAAA or BBBA,
+    BBAB, BABB, ABBB. The panelist is asked to select the sample with the strongest or
+    the weakest characteristic. The panelist is required to select a sample even if he
+    or she cannot identify the one with the strongest or weakest sensory characteristic.
+    """
 
     def __init__(self) -> None:
         """Initialize a 4-AFC discrimination method."""
@@ -236,7 +272,15 @@ class MAFC(DiscriminationMethod):
 
 
 class SpecifiedTetrad(DiscriminationMethod):
-    """Specified Tetrad method."""
+    """Specified Tetrad method.
+
+    The Specified Tetrad method (Wood 1949):
+
+    Four stimuli, two of A and two of B, are used, where A and B are confusable and vary
+    in the relative strengths of their sensory attributes. Panelists are told that there
+    are two pairs of putatively identical stimuli and to indicate the two stimuli of
+    specified A or B.
+    """
 
     def __init__(self) -> None:
         """Initialize a specified tetrad discrimination method."""
@@ -274,7 +318,14 @@ class SpecifiedTetrad(DiscriminationMethod):
 
 
 class UnspecifiedTetrad(DiscriminationMethod):
-    """Unspecified Tetrad method."""
+    """Unspecified Tetrad method.
+
+    The Unspecified Tetrad method (Lockhart 1951):
+
+    Four stimuli, two of A and two of B, are used, where A and B are confusable and vary
+    in the relative strengths of their sensory attributes. Panelists are told that there
+    are two pairs of putatively identical stimuli and to sort them into their pairs.
+    """
 
     def __init__(self) -> None:
         """Initialize an unspecified tetrad discrimination method."""
@@ -312,7 +363,15 @@ class UnspecifiedTetrad(DiscriminationMethod):
 
 
 class DualPair(DiscriminationMethod):
-    """Dual Pair method."""
+    """Dual Pair method.
+
+    The Dual Pair (4IAX) method (Macmillan et al. 1977):
+
+    Two pairs of samples are presented simultaneously to the panelist. One pair is
+    composed of samples of the same stimuli, AA or BB, while the other is composed of
+    samples of differ- ent stimuli, AB or BA. The panelist is told to select the most
+    different pair of the two pairs.
+    """
 
     def __init__(self) -> None:
         """Initialize a dual pair discrimination method."""
@@ -340,7 +399,17 @@ class DualPair(DiscriminationMethod):
 
 
 class DuoTrio(DiscriminationMethod):
-    """Duo-Trio method."""
+    """Duo-Trio method.
+
+    The Duo-Trio method (Dawson and Harris 1951, Peryam 1958):
+
+    Three samples of two products, A and B, are presented to each panelist. Two of
+    them are the same. The possible sets of samples are A: AB, A: BA, B: AB, and B: BA.
+    The first one is labeled as the “control.” The panelist is asked which of the two
+    test samples is the same as the control sample. The panelist is required to select
+    one sample to match the “control” sample even if he or she cannot identify which is
+    the same as the control.
+    """
 
     def __init__(self) -> None:
         """Initialize a Duo-Trio discrimination method."""
@@ -370,7 +439,24 @@ class DuoTrio(DiscriminationMethod):
 
 
 class MplusN(DiscriminationMethod):
-    """M+N method."""
+    """M+N method.
+
+    The “M + N” method (Lockhart 1951):
+
+    M + N samples with M sample A and N sample B are presented. The panelist is told to
+    divide the samples into two groups, of A and B. There are two versions of the
+    method: specified and unspecified.
+
+    This is a generalization of many forced-choice discrimination methods, including
+    the Multiple-Alternative Forced Choice (m-AFC), Triangle, and Specified and
+    Unspecified Tetrad.
+
+    The “M + N” with larger M and N can be regarded as a specific discrimination method
+    with a new model. Unlike the conventional difference tests using the “M + N” with
+    small M and N based on a binomial model, the “M + N” with larger M and N (M = N > 3)
+    can reach a statistical significance in a single trial for only one “M + N” sample
+    set based on a hypergeometric model.
+    """
 
     def __init__(self, m: int, n: int, specified: bool = False):
         """Initialize a m+n discrimination method.

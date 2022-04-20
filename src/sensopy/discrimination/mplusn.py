@@ -48,6 +48,29 @@ def mplusn_mc(
     prop = []
     k = m - n
 
+    def _func1(a, b):
+        return np.mean(a[-1] < b[0])
+
+    def _func2(a, b):
+        cond1 = a[-1] < b[0]
+        cond2 = a[0] > b[-1]
+        return np.mean(cond1 | cond2)
+
+    def _func3(a, b):
+        cond1 = ((b[k] - b[k - 1]) < (b[0] - a[n - 1])) & (a[-1] < b[0])
+        cond2 = ((b[n] - b[n - 1]) < (a[0] - b[m - 1])) & (a[0] > b[-1])
+        return np.mean(cond1 | cond2)
+
+    # Specified test
+    if specified:
+        p = _func1
+    # Test with M = N
+    elif k == 0:
+        p = _func2
+    # Test with M > N
+    elif k > 0:
+        p = _func3
+
     # Seed the random number generator
     np.random.seed(seed=seed)
     for d in delta:
@@ -60,20 +83,7 @@ def mplusn_mc(
         # Sort corresponding n-tuples
         A.sort(axis=0)
         B.sort(axis=0)
-
-        # Specified test
-        if specified:
-            pc = np.mean(A[-1] < B[0])
-        # Test with M = N
-        elif k == 0:
-            cond1 = A[-1] < B[0]
-            cond2 = A[0] > B[-1]
-            pc = np.mean(cond1 | cond2)
-        # Test with M > N
-        elif k > 0:
-            cond1 = ((B[k] - B[k - 1]) < (B[0] - A[n - 1])) & (A[-1] < B[0])
-            cond2 = ((B[n] - B[n - 1]) < (A[0] - B[m - 1])) & (A[0] > B[-1])
-            pc = np.mean(cond1 | cond2)
+        pc = p(A, B)
 
         prop.append(pc)
 
