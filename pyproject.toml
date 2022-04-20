@@ -59,7 +59,7 @@ add_imports = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "-vvv -m 'not slow'"
+addopts = "-vvv -m 'not slow' --durations=3"
 markers = [
     "slow: Slow tests tests.",
 ]
