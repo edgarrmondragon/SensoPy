@@ -20,7 +20,7 @@ def mplusn_mc(
     n: int,
     specified: bool = False,
     max_delta: float = 5,
-    nsteps: int = 300,
+    steps: int = 300,
     seed: int = RAND_SEED,
     sample_size: int = SAMPLE_SIZE,
 ) -> Callable:
@@ -31,7 +31,7 @@ def mplusn_mc(
         n: TODO.
         specified: TODO.
         max_delta: TODO.
-        nsteps: TODO.
+        steps: TODO.
         seed: TODO.
         sample_size: TODO.
 
@@ -44,7 +44,7 @@ def mplusn_mc(
     if m < n:
         raise ValueError("Invalid combination of parameters. M >= N expected.")
 
-    delta = np.linspace(0, max_delta, nsteps)
+    delta = np.linspace(0, max_delta, steps)
     prop = []
     k = m - n
 

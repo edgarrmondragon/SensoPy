@@ -70,20 +70,13 @@ class Triangle(DiscriminationMethod):
         Returns:
             Probability of correct response.
         """
-        delta = np.array([d])
-        delta = delta.flatten()
         f1 = norm.pdf
         f2 = norm.cdf
-
-        if len(delta) > 1:
-            dr = np.reshape(delta, (len(delta), 1))
-        else:
-            dr = d
 
         def _fi(z: np.ndarray) -> np.ndarray:
             x1 = -z * np.sqrt(3) + np.sqrt(2 / 3)
             x2 = -z * np.sqrt(3) - np.sqrt(2 / 3)
-            return 2 * (f2(x1 * dr) + f2(x2 * dr)) * f1(z)
+            return 2 * (f2(x1 * d) + f2(x2 * d)) * f1(z)
 
         x = np.linspace(0, 200, 10000)
         y = _fi(x)
@@ -145,16 +138,9 @@ class ThreeAFC(DiscriminationMethod):
         Returns:
             Probability of correct response.
         """
-        delta = np.array([d])
-        delta = delta.flatten()
-
-        if len(delta) > 1:
-            dr = np.reshape(delta, (len(delta), 1))
-        else:
-            dr = d
 
         def _fi(z: np.ndarray):
-            return (norm.cdf(z) ** 2) * norm.pdf(z - dr)
+            return (norm.cdf(z) ** 2) * norm.pdf(z - d)
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
@@ -188,16 +174,9 @@ class FourAFC(DiscriminationMethod):
         Returns:
             Probability of correct response.
         """
-        delta = np.array([d])
-        delta = delta.flatten()
-
-        if len(delta) > 1:
-            dr = np.reshape(delta, (len(delta), 1))
-        else:
-            dr = d
 
         def _fi(z: np.ndarray) -> np.ndarray:
-            return (norm.cdf(z) ** 3) * norm.pdf(z - dr)
+            return (norm.cdf(z) ** 3) * norm.pdf(z - d)
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
@@ -236,16 +215,9 @@ class MAFC(DiscriminationMethod):
         Returns:
             Probability of correct response.
         """
-        delta = np.array([d])
-        delta = delta.flatten()
-
-        if len(delta) > 1:
-            dr = np.reshape(delta, (len(delta), 1))
-        else:
-            dr = d
 
         def _fi(z: np.ndarray) -> np.ndarray:
-            return (norm.cdf(z) ** (self.m - 1)) * norm.pdf(z - dr)
+            return (norm.cdf(z) ** (self.m - 1)) * norm.pdf(z - d)
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
@@ -279,18 +251,11 @@ class SpecifiedTetrad(DiscriminationMethod):
         Returns:
             Probability of correct response.
         """
-        delta = np.array([d])
-        delta = delta.flatten()
         f1 = norm.pdf
         f2 = norm.cdf
 
-        if len(delta) > 1:
-            dr = np.reshape(delta, (len(delta), 1))
-        else:
-            dr = d
-
         def _fi(z: np.ndarray) -> np.ndarray:
-            return 2 * (f1(z) * f2(z) * (2 * f2(z - dr) - f2(z - dr) ** 2))
+            return 2 * (f1(z) * f2(z) * (2 * f2(z - d) - f2(z - d) ** 2))
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
@@ -324,18 +289,11 @@ class UnspecifiedTetrad(DiscriminationMethod):
         Returns:
             Probability of correct response.
         """
-        delta = np.array([d])
-        delta = delta.flatten()
         f1 = norm.pdf
         f2 = norm.cdf
 
-        if len(delta) > 1:
-            dr = np.reshape(delta, (len(delta), 1))
-        else:
-            dr = d
-
         def _fi(z: np.ndarray) -> np.ndarray:
-            return 2 * (f1(z) * (2 * f2(z) * f2(z - dr) - f2(z - dr) ** 2))
+            return 2 * (f1(z) * (2 * f2(z) * f2(z - d) - f2(z - d) ** 2))
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
