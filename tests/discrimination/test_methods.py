@@ -5,6 +5,7 @@ from __future__ import annotations
 import pytest
 
 from sensopy.discrimination.methods import DiscriminationMethod
+from sensopy.discrimination.mplusn import mplusn_mc
 
 
 def test_abstract_psychometric_function():
@@ -43,3 +44,12 @@ def test_discriminator():
 
     method = _CustomDiscriminator()
     assert method.discriminators(0.5) == pytest.approx(1 / 3)
+
+
+def test_invalid_m_plus_n():
+    """Test invalid m plus n method."""
+    with pytest.raises(
+        ValueError,
+        match="Invalid combination of parameters. M >= N expected.",
+    ):
+        mplusn_mc(1, 3)

@@ -68,7 +68,7 @@ def mplusn_mc(
     elif k == 0:
         p = _func2
     # Test with M > N
-    elif k > 0:
+    else:
         p = _func3
 
     # Seed the random number generator
