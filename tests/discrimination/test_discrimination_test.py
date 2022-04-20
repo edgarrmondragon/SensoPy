@@ -4,11 +4,10 @@ from __future__ import annotations
 
 import pytest
 
-from sensopy.discrimination import DiscriminationTest
+from sensopy import DiscriminationTest
 
 
 @pytest.mark.parametrize(
-    # "method,correct,panelists,alpha,power,p_value,d_prime,stderr,lower,upper",
     "method,method_kwargs,correct,panelists",
     [
         ("triangle", {}, 19, 30),

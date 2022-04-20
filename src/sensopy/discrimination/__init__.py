@@ -2,4 +2,4 @@
 
 from __future__ import annotations
 
-from .discrimination import DiscriminationTest  # noqa: F401
+from .discrimination import DiscriminationTest, Statistic, TestResults  # noqa: F401
