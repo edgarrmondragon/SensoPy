@@ -41,7 +41,7 @@ class DiscriminationMethod(metaclass=ABCMeta):
         ...
 
     def discriminators(self, d: float) -> float:
-        """Discriminators for the Dual Pair method.
+        """Discriminators.
 
         Args:
             d: The Thurstonian sensory distance.
