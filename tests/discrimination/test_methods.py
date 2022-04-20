@@ -28,3 +28,18 @@ def test_abstract_guessing():
 
     with pytest.raises(TypeError, match="abstract method"):
         _CustomPsychometric()
+
+
+def test_discriminator():
+    """Test discriminator."""
+
+    class _CustomDiscriminator(DiscriminationMethod):
+        def psychometric_function(self, d):
+            return d
+
+        @property
+        def guessing(self):
+            return 0.25
+
+    method = _CustomDiscriminator()
+    assert method.discriminators(0.5) == pytest.approx(1 / 3)
