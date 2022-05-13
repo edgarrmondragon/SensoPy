@@ -1,4 +1,8 @@
 # SensoPy
+
+[![Tests](https://github.com/edgarrmondragon/SensoPy/actions/workflows/tests.yml/badge.svg)](https://github.com/edgarrmondragon/SensoPy/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/edgarrmondragon/SensoPy/branch/master/graph/badge.svg?token=k3m3CmIACa)](https://codecov.io/gh/edgarrmondragon/SensoPy)
+
 Python library for the design and analysis of sensory discrimination tests. I have plans to make this a full-fledged sensory data analysis library by including all common standard techniques (Preference Mapping, Penalty Analysis, DOE, etc.)
 
 ## Installation

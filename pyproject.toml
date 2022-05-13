@@ -1,0 +1,73 @@
+[tool.poetry]
+name = "sensopy"
+version = "0.0.1"
+description = "Python library for the design and analysis of sensory discrimination tests."
+authors = [
+    "Edgar Ramírez-Mondragón <edgarrm358@gmail.com>",
+]
+maintainers = [
+    "Edgar Ramírez-Mondragón <edgarrm358@gmail.com>",
+]
+license = "GPL"
+readme = "README.md"
+classifiers=[
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+keywords = [
+    "sensory",
+    "discrimination",
+    "triangle",
+]
+
+[tool.poetry.urls]
+"Issue Tracker" = "https://github.com/edgarrmondragon/SensoPy/issues"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.11"
+numpy = "^1.22.3"
+scipy = "^1.8.0"
+importlib_metadata = {version = ">=1.6,<5.0", python = "<3.8"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.1"
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["sensopy"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+exclude_lines = [
+    "@abstractmethod",
+    "@abstractproperty",
+]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3 # Vertical Hanging Indent
+src_paths = "sensopy"
+use_parentheses = true
+known_first_party = "sensopy"
+include_trailing_comma = true
+add_imports = [
+    "from __future__ import annotations",
+]
+
+[tool.pytest.ini_options]
+addopts = "-vvv -m 'not slow' --durations=3"
+markers = [
+    "slow: Slow tests tests.",
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
