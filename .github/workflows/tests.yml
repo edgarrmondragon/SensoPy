@@ -50,7 +50,7 @@ jobs:
 
     - uses: actions/upload-artifact@v4.1.0
       with:
-        name: coverage-data-${{ matrix.os }}-${{ matrix.python-version }}
+        name: coverage-data-${{ matrix.os }}-${{ matrix.python-version }}-${{ matrix.slow && 'slow' || 'fast' }}
         path: ".coverage.*"
 
     - if: ${{ !matrix.slow && matrix.os == 'ubuntu-latest' }}
