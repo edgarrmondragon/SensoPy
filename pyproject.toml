@@ -52,12 +52,13 @@ test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
 cov-report = [
   "- coverage combine",
-  "coverage report",
+  "report",
 ]
 cov = [
   "test-cov",
   "cov-report",
 ]
+report = "coverage {args:report}"
 
 [[tool.hatch.envs.all.matrix]]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
