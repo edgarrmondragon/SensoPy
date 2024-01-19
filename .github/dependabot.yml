@@ -36,3 +36,7 @@ updates:
       interval: weekly
     reviewers:
       - "edgarrmondragon"
+    groups:
+      actions:
+        patterns:
+          - "*"
