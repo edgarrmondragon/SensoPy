@@ -122,7 +122,7 @@ markers = [
 ]
 
 [tool.coverage.paths]
-source = ["src/sensopy", "*/site-packages"]
+source = ["src/sensopy", "*/SensoPy/src/sensopy", "*/sensopy/src/sensopy"]
 tests = ["tests", "*/sensopy/tests"]
 
 [tool.coverage.run]
