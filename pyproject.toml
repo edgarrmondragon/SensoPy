@@ -131,6 +131,7 @@ branch = true
 parallel = true
 omit = [
   "src/sensopy/__init__.py",
+  "src/sensopy/discrimination/__init__.py",
 ]
 
 [tool.coverage.report]
