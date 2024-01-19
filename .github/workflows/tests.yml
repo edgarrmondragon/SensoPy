@@ -51,7 +51,7 @@ jobs:
         name: coverage-data-${{ matrix.os }}-${{ matrix.python-version }}
         path: ".coverage.*"
 
-    - if: ${{ !matrix.slow }}
+    - if: ${{ !matrix.slow && matrix.os == 'ubuntu-latest' }}
       run: hatch run types:check
 
   coverage:
