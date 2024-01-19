@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import typing as t
 from abc import ABCMeta, abstractmethod, abstractproperty
 
 import numpy as np
@@ -10,6 +11,9 @@ from scipy.integrate import trapezoid
 from scipy.stats import norm
 
 from . import mplusn
+
+if t.TYPE_CHECKING:
+    import numpy.typing as npt
 
 
 class DiscriminationMethod(metaclass=ABCMeta):
@@ -81,7 +85,7 @@ class TriangleMethod(DiscriminationMethod):
         f1 = norm.pdf
         f2 = norm.cdf
 
-        def _fi(z: np.ndarray) -> np.ndarray:
+        def _fi(z: np.ndarray) -> npt.NDArray[np.float64]:
             x1 = -z * np.sqrt(3) + np.sqrt(2 / 3)
             x2 = -z * np.sqrt(3) - np.sqrt(2 / 3)
             return 2 * (f2(x1 * d) + f2(x2 * d)) * f1(z)
@@ -166,7 +170,7 @@ class ThreeAFCMethod(DiscriminationMethod):
             Probability of correct response.
         """
 
-        def _fi(z: np.ndarray):
+        def _fi(z: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
             return (norm.cdf(z) ** 2) * norm.pdf(z - d)
 
         x = np.linspace(-100, 100, 10000)

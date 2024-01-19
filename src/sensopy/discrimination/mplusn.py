@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Callable
+import typing as t
 
 import numpy as np
 from scipy import interpolate
+
+if t.TYPE_CHECKING:
+    import numpy.typing as npt
+
 
 RAND_SEED = 12345
 SAMPLE_SIZE = 100000
@@ -23,7 +27,7 @@ def mplusn_mc(
     steps: int = 300,
     seed: int = RAND_SEED,
     sample_size: int = SAMPLE_SIZE,
-) -> Callable:
+) -> t.Callable:
     """Monte Carlo simulation for M + N method.
 
     Args:
@@ -48,15 +52,15 @@ def mplusn_mc(
     prop = []
     k = m - n
 
-    def _func1(a, b):
+    def _func1(a: npt.NDArray[np.float64], b: npt.NDArray[np.float64]) -> float:
         return np.mean(a[-1] < b[0])
 
-    def _func2(a, b):
+    def _func2(a: npt.NDArray[np.float64], b: npt.NDArray[np.float64]) -> float:
         cond1 = a[-1] < b[0]
         cond2 = a[0] > b[-1]
         return np.mean(cond1 | cond2)
 
-    def _func3(a, b):
+    def _func3(a: npt.NDArray[np.float64], b: npt.NDArray[np.float64]) -> float:
         cond1 = ((b[k] - b[k - 1]) < (b[0] - a[n - 1])) & (a[-1] < b[0])
         cond2 = ((b[n] - b[n - 1]) < (a[0] - b[m - 1])) & (a[0] > b[-1])
         return np.mean(cond1 | cond2)
@@ -75,15 +79,15 @@ def mplusn_mc(
     np.random.seed(seed=seed)
     for d in delta:
         # Samples from A ~ N(0,1)
-        A = np.random.randn(n, sample_size)
+        a = np.random.randn(n, sample_size)
 
         # Samples from B ~ N(d,1)
-        B = np.random.randn(m, sample_size) + d
+        b = np.random.randn(m, sample_size) + d
 
         # Sort corresponding n-tuples
-        A.sort(axis=0)
-        B.sort(axis=0)
-        pc = p(A, B)
+        a.sort(axis=0)
+        b.sort(axis=0)
+        pc = p(a, b)
 
         prop.append(pc)
 
