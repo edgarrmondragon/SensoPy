@@ -126,6 +126,7 @@ source = ["src", "*/site-packages"]
 
 [tool.coverage.run]
 branch = true
+parallel = true
 source = ["sensopy"]
 
 [tool.coverage.report]
@@ -134,6 +135,7 @@ fail_under = 90
 exclude_also = [
     "@abstractmethod",
     "@abstractproperty",
+    "if TYPE_CHECKING:",
 ]
 
 [[tool.mypy.overrides]]
