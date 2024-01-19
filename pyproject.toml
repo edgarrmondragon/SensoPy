@@ -122,12 +122,16 @@ markers = [
 ]
 
 [tool.coverage.paths]
-source = ["src", "*/site-packages"]
+source = ["src/sensopy", "*/site-packages"]
+tests = ["tests", "*/sensopy/tests"]
 
 [tool.coverage.run]
+source_pkgs = ["sensopy", "tests"]
 branch = true
 parallel = true
-source = ["sensopy"]
+omit = [
+  "src/sensopy/__init__.py",
+]
 
 [tool.coverage.report]
 show_missing = true
