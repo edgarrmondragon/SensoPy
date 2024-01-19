@@ -27,8 +27,7 @@ nox.options.sessions = ("tests",)
 @session(python=python_versions)
 def tests(session: Session) -> None:
     """Execute pytest tests."""
-    session.install(".")
-    session.install("coverage[toml]", "pytest")
+    session.install(".[tests]")
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -36,7 +35,7 @@ def tests(session: Session) -> None:
             session.notify("coverage", posargs=[])
 
 
-@session(python=python_versions[0])
+@session()
 def coverage(session: Session) -> None:
     """Upload coverage data."""
     args = session.posargs or ["report"]

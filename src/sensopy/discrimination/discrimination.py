@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import NamedTuple
+import typing as t
 
 import numpy as np
 from scipy.misc import derivative
@@ -12,7 +12,7 @@ from scipy.stats import beta, binom
 from .methods import DiscriminationMethod
 
 
-class Statistic(NamedTuple):
+class Statistic(t.NamedTuple):
     """Results of a discrimination test."""
 
     estimate: float
@@ -21,7 +21,7 @@ class Statistic(NamedTuple):
     upper: float
 
 
-class TestResults(NamedTuple):
+class TestResults(t.NamedTuple):
     """Results of a discrimination test."""
 
     pg: float
@@ -77,16 +77,12 @@ class DiscriminationTest:
         # Lower limits
         pc_lower = max(beta.ppf(alpha / 2, x, n - x + 1), pg)
         pd_lower = (pc_lower - pg) / (1 - pg)
-        d_prime_lower = fsolve(
-            lambda d: self.method.psychometric_function(d) - pc_lower, 1.0
-        )[0]
+        d_prime_lower = fsolve(lambda d: self.method.psychometric_function(d) - pc_lower, 1.0)[0]
 
         # Upper limits
         pc_upper = min(beta.ppf(1 - alpha / 2, x + 1, n - x), 1.0)
         pd_upper = (pc_upper - pg) / (1 - pg)
-        d_prime_upper = fsolve(
-            lambda d: self.method.psychometric_function(d) - pc_upper, 1.0
-        )[0]
+        d_prime_upper = fsolve(lambda d: self.method.psychometric_function(d) - pc_upper, 1.0)[0]
 
         return (
             Statistic(pc, pc_err, pc_lower, pc_upper),
@@ -127,7 +123,7 @@ class DiscriminationTest:
         pd = (pc - pg) / (1 - pg)
         d_prime = fsolve(lambda d: self.method.psychometric_function(d) - pc, 1.0)[0]
 
-        def stats(x, n, pc, pg, alpha):
+        def stats(x: int, n: int, pc: float, pg: float, alpha: float) -> tuple[float, float]:
             pc0 = pg + (1 - pg) * pd0
             p_value = 1 - binom.cdf(x - 1, n, pc0)
             xcrit = binom.ppf(1 - alpha, n, pc0) + 1
@@ -188,7 +184,7 @@ class DiscriminationTest:
         pd = (pc - pg) / (1 - pg)
         d_prime = fsolve(lambda d: self.method.psychometric_function(d) - pc, 1.0)[0]
 
-        def stats(x, n, pc, pg, alpha):
+        def stats(x: int, n: int, pc: float, pg: float, alpha: float) -> tuple[float, float]:
             pc0 = pg + (1 - pg) * pd0
             p_value = binom.cdf(x, n, pc0)
             xcrit = binom.ppf(alpha, n, pc0) + 1

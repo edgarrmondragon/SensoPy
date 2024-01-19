@@ -24,7 +24,7 @@ def test_abstract_guessing():
     """Test abstract guessing property."""
 
     class _CustomPsychometric(DiscriminationMethod):
-        def psychometric_function(self, d):
+        def psychometric_function(self, d: float) -> float:
             return 0.5
 
     with pytest.raises(TypeError, match="abstract method"):
@@ -35,11 +35,11 @@ def test_discriminator():
     """Test discriminator."""
 
     class _CustomDiscriminator(DiscriminationMethod):
-        def psychometric_function(self, d):
+        def psychometric_function(self, d: float) -> float:
             return d
 
         @property
-        def guessing(self):
+        def guessing(self) -> float:
             return 0.25
 
     method = _CustomDiscriminator()
