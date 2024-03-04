@@ -77,11 +77,11 @@ jobs:
         pipx install hatch
         hatch --version
 
-    - uses: actions/download-artifact@v4.1.2
+    - uses: actions/download-artifact@v4.1.4
       with:
         pattern: coverage-data-*
         merge-multiple: true
 
     - run: hatch run cov-report
     - run: hatch run report -- xml
-    - uses: codecov/codecov-action@v4.0.2
+    - uses: codecov/codecov-action@v4.1.0
