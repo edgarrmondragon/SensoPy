@@ -35,7 +35,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4.1.2
-    - uses: actions/setup-python@v5.0.0
+    - uses: actions/setup-python@v5.1.0
       id: python
       with:
         python-version: ${{ matrix.python-version }}
@@ -66,7 +66,7 @@ jobs:
     needs: tests
     steps:
     - uses: actions/checkout@v4.1.2
-    - uses: actions/setup-python@v5.0.0
+    - uses: actions/setup-python@v5.1.0
       with:
         python-version: "3.11"
 
@@ -84,4 +84,4 @@ jobs:
 
     - run: hatch run cov-report
     - run: hatch run report -- xml
-    - uses: codecov/codecov-action@v4.1.0
+    - uses: codecov/codecov-action@v4.1.1
