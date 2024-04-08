@@ -44,7 +44,7 @@ jobs:
 
     - name: Install Hatch
       env:
-        PIP_CONSTRAINT: .github/workflows/constraints.txt
+        PIP_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
       run: |
         pipx install --python=${{ steps.python.outputs.python-path }} hatch
         hatch --version
@@ -72,7 +72,7 @@ jobs:
 
     - name: Install Hatch
       env:
-        PIP_CONSTRAINT: .github/workflows/constraints.txt
+        PIP_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
       run: |
         pipx install hatch
         hatch --version
