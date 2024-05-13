@@ -15,10 +15,14 @@ keywords = [
   "triangle",
 ]
 license = "MIT"
-maintainers = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
-authors = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
+maintainers = [
+  { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" },
+]
+authors = [
+  { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" },
+]
 requires-python = ">=3.8"
-classifiers=[
+classifiers = [
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
@@ -46,7 +50,9 @@ urls."Issue Tracker" = "https://github.com/edgarrmondragon/SensoPy/issues"
 source = "vcs"
 
 [tool.hatch.envs.default]
-features = ["dev"]
+features = [
+  "dev",
+]
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
@@ -61,7 +67,13 @@ cov = [
 report = "coverage {args:report}"
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+python = [
+  "3.8",
+  "3.9",
+  "3.10",
+  "3.11",
+  "3.12",
+]
 
 [tool.hatch.envs.types]
 dependencies = [
@@ -75,31 +87,31 @@ line-length = 100
 
 [tool.ruff.lint]
 ignore = [
-  "ANN101",  # missing-type-self
+  "ANN101", # missing-type-self
 ]
 select = [
-    "A",
-    "ANN",
-    "B",
-    "C",
-    "D",
-    "E",
-    "ERA",
-    "F",
-    "I",
-    "N",
-    "RUF",
-    "S",
-    "W",
+  "A",
+  "ANN",
+  "B",
+  "C",
+  "D",
+  "E",
+  "ERA",
+  "F",
+  "I",
+  "N",
+  "RUF",
+  "S",
+  "W",
 ]
 unfixable = [
-    "ERA",
+  "ERA",
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = [
-  "ANN201",  # missing-return-type-undocumented-public-function
-  "S101",    # assert
+  "ANN201", # missing-return-type-undocumented-public-function
+  "S101",   # assert
 ]
 
 [tool.ruff.lint.flake8-annotations]
@@ -108,8 +120,12 @@ mypy-init-return = true
 suppress-dummy-args = true
 
 [tool.ruff.lint.isort]
-known-first-party = ["sensopy"]
-required-imports = ["from __future__ import annotations"]
+known-first-party = [
+  "sensopy",
+]
+required-imports = [
+  "from __future__ import annotations",
+]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
@@ -117,15 +133,25 @@ convention = "google"
 [tool.pytest.ini_options]
 addopts = "-vvv -m 'not slow' --durations=3"
 markers = [
-    "slow: Slow tests tests.",
+  "slow: Slow tests tests.",
 ]
 
 [tool.coverage.paths]
-source = ["src/sensopy", "*/SensoPy/src/sensopy", "*/sensopy/src/sensopy"]
-tests = ["tests", "*/sensopy/tests"]
+source = [
+  "src/sensopy",
+  "*/SensoPy/src/sensopy",
+  "*/sensopy/src/sensopy",
+]
+tests = [
+  "tests",
+  "*/sensopy/tests",
+]
 
 [tool.coverage.run]
-source_pkgs = ["sensopy", "tests"]
+source_pkgs = [
+  "sensopy",
+  "tests",
+]
 branch = true
 parallel = true
 omit = [
@@ -137,9 +163,9 @@ omit = [
 show_missing = true
 fail_under = 90
 exclude_also = [
-    "@abstractmethod",
-    "@abstractproperty",
-    '''if (t\.)?TYPE_CHECKING:''',
+  "@abstractmethod",
+  "@abstractproperty",
+  '''if (t\.)?TYPE_CHECKING:''',
 ]
 
 [[tool.mypy.overrides]]
