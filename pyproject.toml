@@ -85,11 +85,7 @@ check = "mypy --install-types --non-interactive {args:src/sensopy tests}"
 [tool.ruff]
 line-length = 100
 
-[tool.ruff.lint]
-ignore = [
-  "ANN101", # missing-type-self
-]
-select = [
+lint.select = [
   "A",
   "ANN",
   "B",
@@ -104,31 +100,26 @@ select = [
   "S",
   "W",
 ]
-unfixable = [
-  "ERA",
-]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = [
+lint.per-file-ignores."tests/*" = [
   "ANN201", # missing-return-type-undocumented-public-function
   "S101",   # assert
 ]
-
-[tool.ruff.lint.flake8-annotations]
-allow-star-arg-any = true
-mypy-init-return = true
-suppress-dummy-args = true
-
-[tool.ruff.lint.isort]
-known-first-party = [
+lint.unfixable = [
+  "ERA",
+]
+lint.flake8-annotations.allow-star-arg-any = true
+lint.flake8-annotations.mypy-init-return = true
+lint.flake8-annotations.suppress-dummy-args = true
+lint.isort.known-first-party = [
   "sensopy",
 ]
-required-imports = [
+lint.isort.required-imports = [
   "from __future__ import annotations",
 ]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+lint.pydocstyle.convention = "google"
+lint.ignore = [
+  "ANN101", # missing-type-self
+]
 
 [tool.pytest.ini_options]
 addopts = "-vvv -m 'not slow' --durations=3"
