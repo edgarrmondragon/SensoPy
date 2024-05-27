@@ -100,6 +100,10 @@ lint.select = [
   "S",
   "W",
 ]
+lint.ignore = [
+  "ANN101", # missing-type-self
+]
+
 lint.per-file-ignores."tests/*" = [
   "ANN201", # missing-return-type-undocumented-public-function
   "S101",   # assert
@@ -117,9 +121,6 @@ lint.isort.required-imports = [
   "from __future__ import annotations",
 ]
 lint.pydocstyle.convention = "google"
-lint.ignore = [
-  "ANN101", # missing-type-self
-]
 
 [tool.pytest.ini_options]
 addopts = "-vvv -m 'not slow' --durations=3"
