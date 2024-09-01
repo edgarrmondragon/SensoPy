@@ -35,7 +35,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4.1.7
-    - uses: actions/setup-python@v5.1.1
+    - uses: actions/setup-python@v5.2.0
       id: python
       with:
         python-version: ${{ matrix.python-version }}
@@ -53,7 +53,7 @@ jobs:
       run: |
         hatch run test-cov -- ${{ matrix.slow && '-m slow' || '' }}
 
-    - uses: actions/upload-artifact@v4.3.4
+    - uses: actions/upload-artifact@v4.4.0
       with:
         name: coverage-data-${{ matrix.os }}-${{ matrix.python-version }}-${{ matrix.slow && 'slow' || 'fast' }}
         path: ".coverage.*"
@@ -66,7 +66,7 @@ jobs:
     needs: tests
     steps:
     - uses: actions/checkout@v4.1.7
-    - uses: actions/setup-python@v5.1.1
+    - uses: actions/setup-python@v5.2.0
       with:
         python-version: "3.11"
 
