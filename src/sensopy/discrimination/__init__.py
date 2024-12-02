@@ -18,14 +18,14 @@ from .methods import (
 
 __all__ = [
     "DiscriminationTest",
-    "Statistic",
-    "TestResults",
     "DualPairMethod",
     "DuoTrioMethod",
     "FourAFCMethod",
     "MPlusNMethod",
     "MultipleAFCMethod",
     "SpecifiedTetradMethod",
+    "Statistic",
+    "TestResults",
     "ThreeAFCMethod",
     "TriangleMethod",
     "TwoAFCMethod",
