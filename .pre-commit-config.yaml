@@ -16,14 +16,14 @@ repos:
   - id: trailing-whitespace
 
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.30.0
+  rev: 0.31.1
   hooks:
   - id: check-dependabot
   - id: check-github-workflows
   - id: check-readthedocs
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.8.1
+  rev: v0.9.4
   hooks:
   - id: ruff
     args: [--fix, --exit-non-zero-on-fix, --show-fixes]
@@ -37,7 +37,7 @@ repos:
     - darglint==1.8.1
 
 - repo: https://github.com/pre-commit/pre-commit
-  rev: v4.0.1
+  rev: v4.1.0
   hooks:
   - id: validate_manifest
 
