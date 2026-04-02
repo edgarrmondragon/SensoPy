@@ -9,8 +9,6 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
-    reviewers:
-      - "edgarrmondragon"
     labels:
       - "dependencies"
     versioning-strategy: lockfile-only
@@ -24,25 +22,27 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: pip
     directory: "/.github/workflows"
     schedule:
       interval: monthly
-    reviewers:
-      - "edgarrmondragon"
     groups:
       ci:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: monthly
-    reviewers:
-      - "edgarrmondragon"
     groups:
       actions:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7

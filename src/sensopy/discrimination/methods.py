@@ -2,56 +2,64 @@
 
 from __future__ import annotations
 
-import typing as t
-from abc import ABCMeta, abstractmethod, abstractproperty
+import abc
 
 import numpy as np
+import numpy.typing as npt
 import scipy.special
 from scipy.integrate import trapezoid
 from scipy.stats import norm
 
 from . import mplusn
 
-if t.TYPE_CHECKING:
-    import numpy.typing as npt
+__all__ = [
+    "DUAL_PAIR",
+    "DUO_TRIO",
+    "FOUR_AFC",
+    "SPECIFIED_TETRAD",
+    "THREE_AFC",
+    "TRIANGLE",
+    "TWO_AFC",
+    "UNSPECIFIED_TETRAD",
+    "MPlusNMethod",
+    "MultipleAFCMethod",
+]
 
 
-class DiscriminationMethod(metaclass=ABCMeta):
+class DiscriminationMethod(abc.ABC):
     """A sensory discrimination method."""
 
-    def __init__(self, name: str | None = None) -> None:
-        """Initialize a discrimination method.
-
-        Args:
-            name: _description_. Defaults to None.
-        """
-        self.name = name
-
-    @abstractmethod
+    @abc.abstractmethod
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function.
+        """Psychometric function relating d' to the probability of a correct response.
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d' (δ), a method-independent measure
+                of sensory difference/similarity (Bi, 2015, §2.1).
 
         Returns:
-            TODO.
+            Probability of a correct response P_c for the given d'.
         """
         ...
 
-    @abstractproperty
+    @property
+    @abc.abstractmethod
     def guessing(self) -> float:
-        """Guessing rate."""
+        """Chance-level probability of a correct response when d' = 0."""
         ...
 
     def discriminators(self, d: float) -> float:
-        """Discriminators.
+        """Proportion of discriminators (p_d) for a given d'.
+
+        p_d is the proportion of the population that can reliably detect the
+        sensory difference, estimated as (P_c - P_g) / (1 - P_g), where P_g
+        is the guessing rate (Bi, 2015, §4.1).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            TODO.
+            Proportion of discriminators p_d.
         """
         pc = self.psychometric_function(d)
         pg = self.guessing
@@ -59,115 +67,103 @@ class DiscriminationMethod(metaclass=ABCMeta):
 
 
 class TriangleMethod(DiscriminationMethod):
-    """Triangle method.
-
-    The Triangular (Triangle) method (Dawson and Harris 1951, Peryam 1958):
+    """Triangle (Triangular) discrimination method (Dawson and Harris 1951, Peryam 1958).
 
     Three samples of two products, A and B, are presented to each panelist. Two of them
     are the same. The possible sets of samples are AAB, ABA, BAA, ABB, BAB, and BBA.
-    The panelist is asked to select the odd sample. The panelist is required to select
-    one sample even if he or she cannot identify the odd one.
+    The panelist is asked to select the odd sample and must select one even if they
+    cannot identify it (Bi, 2015, §1.5.1d).
+
+    The psychometric function is (Bi, 2015, eq. 2.2.5):
+
+        P_c = 2 ∫_0^∞ φ(x) { Φ[-√3·x + √(2/3)·δ] + Φ[-√3·x - √(2/3)·δ] } dx
+
+    Guessing probability: 1/3.
     """
 
-    def __init__(self) -> None:
-        """Initialize a triangle method."""
-        super().__init__(name="triangle")
-
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the Triangle method.
+        """Psychometric function for the Triangle method (Bi, 2015, eq. 2.2.5).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c.
         """
         f1 = norm.pdf
         f2 = norm.cdf
 
-        def _fi(z: np.ndarray) -> npt.NDArray[np.float64]:
-            x1 = -z * np.sqrt(3) + np.sqrt(2 / 3)
-            x2 = -z * np.sqrt(3) - np.sqrt(2 / 3)
-            return 2 * (f2(x1 * d) + f2(x2 * d)) * f1(z)
+        def _fi(z: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+            x1 = -z * np.sqrt(3) + np.sqrt(2 / 3) * d
+            x2 = -z * np.sqrt(3) - np.sqrt(2 / 3) * d
+            return 2 * (f2(x1) + f2(x2)) * f1(z)  # type: ignore[no-any-return]
 
         x = np.linspace(0, 200, 10000)
         y = _fi(x)
-        i = trapezoid(y, x)
-
-        return i
+        return trapezoid(y, x)  # type: ignore[no-any-return]  # type: ignore[no-any-return]
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
-
-        Returns:
-            Guessing rate for the Triangle method.
-        """
+        """Chance-level probability for the Triangle method (1/3)."""
         return 1 / 3
 
 
 class TwoAFCMethod(DiscriminationMethod):
-    """Two-Alternative Forced-Choice method.
+    """Two-Alternative Forced Choice (2-AFC) method (Green and Swets 1966).
 
-    The Two-Alternative Forced Choice (2-AFC) method (Green and Swets 1966):
+    Also called the paired comparison method (Dawson and Harris 1951, Peryam 1958).
+    The panelist receives a pair of coded samples, A and B, for comparison on the basis
+    of a specified sensory characteristic. The possible pairs are AB and BA. The panelist
+    selects the sample with the strongest (or weakest) characteristic and must choose
+    even if they cannot detect a difference (Bi, 2015, §1.5.1a).
 
-    This method is also called the paired comparison method (Dawson and Harris 1951,
-    Peryam 1958). With this method, the panelist receives a pair of coded samples,
-    A and B, for comparison on the basis of some specified sensory characteristic.
-    The possible pairs are AB and BA. The panelist is asked to select the sample with
-    the strongest (or weakest) sensory characteristic. The panelist is required to
-    select one even if he or she cannot detect the difference.
+    The psychometric function is (Bi, 2015, eq. 2.2.1):
+
+        P_c = Φ(δ / √2)
+
+    Guessing probability: 1/2.
     """
 
-    def __init__(self) -> None:
-        """Initialize a 2-AFC discrimination method."""
-        super().__init__(name="twoAFC")
-
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the 2-AFC method.
+        """Psychometric function for the 2-AFC method (Bi, 2015, eq. 2.2.1).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c.
         """
-        return norm.cdf(d / np.sqrt(2))
+        return norm.cdf(d / np.sqrt(2))  # type: ignore[no-any-return]
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
-
-        Returns:
-            Guessing rate for the 2-AFC method.
-        """
+        """Chance-level probability for the 2-AFC method (1/2)."""
         return 1 / 2
 
 
 class ThreeAFCMethod(DiscriminationMethod):
-    """Three-Alternative Forced-Choice method.
-
-    The Three-Alternative Forced Choice (3-AFC) method (Green and Swets 1966):
+    """Three-Alternative Forced Choice (3-AFC) method (Green and Swets 1966).
 
     Three samples of two products, A and B, are presented to each panelist. Two of them
     are the same. The possible sets of samples are AAB, ABA, BAA or ABB, BAB, BBA.
-    The panelist is asked to select the sample with the strongest or the weakest
-    characteristic. The panelist has to select a sample even if he or she cannot
-    identify the one with the strongest or the weakest sensory characteristic.
+    The panelist selects the sample with the strongest or weakest characteristic and must
+    choose even if they cannot identify it (Bi, 2015, §1.5.1b).
+
+    The psychometric function is (Bi, 2015, eq. 2.2.2):
+
+        P_c = ∫_{-∞}^{∞} Φ²(u) φ(u - δ) du
+
+    Guessing probability: 1/3.
     """
 
-    def __init__(self) -> None:
-        """Initialize a 3-AFC discrimination method."""
-        super().__init__(name="threeAFC")
-
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the 3-AFC method.
+        """Psychometric function for the 3-AFC method (Bi, 2015, eq. 2.2.2).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c.
         """
 
         def _fi(z: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
@@ -175,342 +171,310 @@ class ThreeAFCMethod(DiscriminationMethod):
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
-        i = trapezoid(y, x)
-
-        return i
+        return trapezoid(y, x)  # type: ignore[no-any-return]
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
-
-        Returns:
-            Guessing rate for the 3-AFC method.
-        """
+        """Chance-level probability for the 3-AFC method (1/3)."""
         return 1 / 3
 
 
 class FourAFCMethod(DiscriminationMethod):
-    """Four-Alternative Forced-Choice method.
+    """Four-Alternative Forced Choice (4-AFC) method (Swets 1959).
 
-    The Four-Alternative Forced Choice (4-AFC) method (Swets 1959):
+    Four samples of two products, A and B, are presented to each panelist. Three of them
+    are the same. The possible sets of samples are AAAB, AABA, ABAA, BAAA or BBBA,
+    BBAB, BABB, ABBB. The panelist selects the sample with the strongest or weakest
+    characteristic and must choose even if they cannot identify it (Bi, 2015, §1.5.1c).
 
-    Four samples of two products, A and B, are presented to each panelist. Three of
-    them are the same. The possible sets of samples are AAAB, AABA, ABAA, BAAA or BBBA,
-    BBAB, BABB, ABBB. The panelist is asked to select the sample with the strongest or
-    the weakest characteristic. The panelist is required to select a sample even if he
-    or she cannot identify the one with the strongest or weakest sensory characteristic.
+    The psychometric function is (Bi, 2015, eq. 2.2.3):
+
+        P_c = ∫_{-∞}^{∞} Φ³(u) φ(u - δ) du
+
+    Guessing probability: 1/4.
     """
 
-    def __init__(self) -> None:
-        """Initialize a 4-AFC discrimination method."""
-        super().__init__(name="fourAFC")
-
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the 4-AFC method.
+        """Psychometric function for the 4-AFC method (Bi, 2015, eq. 2.2.3).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c.
         """
 
-        def _fi(z: np.ndarray) -> np.ndarray:
+        def _fi(z: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
             return (norm.cdf(z) ** 3) * norm.pdf(z - d)
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
-        i = trapezoid(y, x)
-
-        return i
+        return trapezoid(y, x)  # type: ignore[no-any-return]
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
-
-        Returns:
-            Guessing rate for the 4-AFC method.
-        """
+        """Chance-level probability for the 4-AFC method (1/4)."""
         return 1 / 4
 
 
 class MultipleAFCMethod(DiscriminationMethod):
-    """m-Alternative Forced-Choice method."""
+    """m-Alternative Forced Choice (m-AFC) method.
+
+    Generalisation of the AFC family. m samples are presented; (m - 1) are from
+    product A and one from product B. The panelist selects the sample with the
+    strongest (or weakest) characteristic (Bi, 2015, §1.5.1).
+
+    The psychometric function is (Bi, 2015, eq. 2.2.3 generalised):
+
+        P_c = ∫_{-∞}^{∞} Φ^(m-1)(u) φ(u - δ) du
+
+    Guessing probability: 1/m.
+    """
 
     def __init__(self, m: int) -> None:
-        """Initialize a m-AFC discrimination method.
+        """Initialize an m-AFC discrimination method.
 
         Args:
-            m: TODO.
+            m: Number of alternatives (must be ≥ 2).
         """
-        super().__init__(name=f"{m}AFC")
         self.m = m
 
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the m-AFC method.
+        """Psychometric function for the m-AFC method (Bi, 2015, eq. 2.2.3 generalised).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c.
         """
 
-        def _fi(z: np.ndarray) -> np.ndarray:
+        def _fi(z: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
             return (norm.cdf(z) ** (self.m - 1)) * norm.pdf(z - d)
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
-        i = trapezoid(y, x)
-
-        return i
+        return trapezoid(y, x)  # type: ignore[no-any-return]
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
-
-        Returns:
-            Guessing rate for the m-AFC method.
-        """
+        """Chance-level probability for the m-AFC method (1/m)."""
         return 1 / self.m
 
 
 class SpecifiedTetradMethod(DiscriminationMethod):
-    """Specified Tetrad method.
+    """Specified Tetrad method (Wood 1949).
 
-    The Specified Tetrad method (Wood 1949):
+    Four stimuli — two of A and two of B — are presented. A and B are confusable and
+    vary in the relative strengths of their sensory attributes. Panelists are told that
+    there are two pairs of putatively identical stimuli and must indicate the two stimuli
+    of the specified product (A or B) (Bi, 2015, §1.5.1g).
 
-    Four stimuli, two of A and two of B, are used, where A and B are confusable and vary
-    in the relative strengths of their sensory attributes. Panelists are told that there
-    are two pairs of putatively identical stimuli and to indicate the two stimuli of
-    specified A or B.
+    The psychometric function is (Bi, 2015, eq. 2.2.11):
+
+        P_c = 1 - 2 ∫_{-∞}^{∞} φ(x) Φ(x) { 2Φ(x - δ) - [Φ(x - δ)]² } dx
+
+    Guessing probability: 1/6.
     """
 
-    def __init__(self) -> None:
-        """Initialize a specified tetrad discrimination method."""
-        super().__init__(name="stetrad")
-
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the Specified Tetrad method.
+        """Psychometric function for the Specified Tetrad method (Bi, 2015, eq. 2.2.11).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c.
         """
         f1 = norm.pdf
         f2 = norm.cdf
 
-        def _fi(z: np.ndarray) -> np.ndarray:
+        def _fi(z: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
             return 2 * (f1(z) * f2(z) * (2 * f2(z - d) - f2(z - d) ** 2))
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
         i = trapezoid(y, x)
 
-        return 1 - i
+        return 1 - i  # type: ignore[no-any-return]
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
-
-        Returns:
-            Guessing rate for the Specified Tetrad method.
-        """
+        """Chance-level probability for the Specified Tetrad method (1/6)."""
         return 1 / 6
 
 
 class UnspecifiedTetrad(DiscriminationMethod):
-    """Unspecified Tetrad method.
+    """Unspecified Tetrad method (Lockhart 1951).
 
-    The Unspecified Tetrad method (Lockhart 1951):
+    Four stimuli — two of A and two of B — are presented. A and B are confusable and
+    vary in the relative strengths of their sensory attributes. Panelists are told that
+    there are two pairs of putatively identical stimuli and must sort them into their
+    pairs, without being told which product to identify (Bi, 2015, §1.5.1f).
 
-    Four stimuli, two of A and two of B, are used, where A and B are confusable and vary
-    in the relative strengths of their sensory attributes. Panelists are told that there
-    are two pairs of putatively identical stimuli and to sort them into their pairs.
+    The psychometric function is (Bi, 2015, eq. 2.2.8):
+
+        P_c = 1 - 2 ∫_{-∞}^{∞} φ(x) { 2Φ(x)Φ(x - δ) - [Φ(x - δ)]² } dx
+
+    Guessing probability: 1/3.
     """
 
-    def __init__(self) -> None:
-        """Initialize an unspecified tetrad discrimination method."""
-        super().__init__(name="utetrad")
-
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the Unspecified Tetrad method.
+        """Psychometric function for the Unspecified Tetrad method (Bi, 2015, eq. 2.2.8).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c.
         """
         f1 = norm.pdf
         f2 = norm.cdf
 
-        def _fi(z: np.ndarray) -> np.ndarray:
+        def _fi(z: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
             return 2 * (f1(z) * (2 * f2(z) * f2(z - d) - f2(z - d) ** 2))
 
         x = np.linspace(-100, 100, 10000)
         y = _fi(x)
         i = trapezoid(y, x)
 
-        return 1 - i
+        return 1 - i  # type: ignore[no-any-return]
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
-
-        Returns:
-            Guessing rate for the Unspecified Tetrad method.
-        """
+        """Chance-level probability for the Unspecified Tetrad method (1/3)."""
         return 1 / 3
 
 
 class DualPairMethod(DiscriminationMethod):
-    """Dual Pair method.
-
-    The Dual Pair (4IAX) method (Macmillan et al. 1977):
+    """Dual Pair (4IAX) method (Macmillan et al. 1977).
 
     Two pairs of samples are presented simultaneously to the panelist. One pair is
-    composed of samples of the same stimuli, AA or BB, while the other is composed of
-    samples of differ- ent stimuli, AB or BA. The panelist is told to select the most
-    different pair of the two pairs.
+    composed of samples of the same stimulus (AA or BB); the other is composed of
+    samples of different stimuli (AB or BA). The panelist selects the most different
+    pair of the two (Bi, 2015, §1.5.1h).
+
+    The psychometric function is (Bi, 2015, eq. 2.2.12):
+
+        P_c = [Φ(δ/2)]² + [Φ(-δ/2)]²
+
+    Guessing probability: 1/2.
     """
 
-    def __init__(self) -> None:
-        """Initialize a dual pair discrimination method."""
-        super().__init__(name="dualpair")
-
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the Dual Pair method.
+        """Psychometric function for the Dual Pair method (Bi, 2015, eq. 2.2.12).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c.
         """
         return norm.cdf(d / 2) ** 2 + norm.cdf(-d / 2) ** 2
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
-
-        Returns:
-            Guessing rate for the Dual Pair method.
-        """
+        """Chance-level probability for the Dual Pair method (1/2)."""
         return 1 / 2
 
 
 class DuoTrioMethod(DiscriminationMethod):
-    """Duo-Trio method.
+    """Duo-Trio method (Dawson and Harris 1951, Peryam 1958).
 
-    The Duo-Trio method (Dawson and Harris 1951, Peryam 1958):
+    Three samples of two products, A and B, are presented to each panelist. Two of them
+    are the same. The possible sets of samples are A:AB, A:BA, B:AB, and B:BA. The first
+    sample is labelled the "control." The panelist selects which of the two test samples
+    matches the control and must choose even if they cannot identify the match
+    (Bi, 2015, §1.5.1e).
 
-    Three samples of two products, A and B, are presented to each panelist. Two of
-    them are the same. The possible sets of samples are A: AB, A: BA, B: AB, and B: BA.
-    The first one is labeled as the “control.” The panelist is asked which of the two
-    test samples is the same as the control sample. The panelist is required to select
-    one sample to match the “control” sample even if he or she cannot identify which is
-    the same as the control.
+    The psychometric function is (Bi, 2015, eq. 2.2.4):
+
+        P_c = 1 - Φ(δ/√2) - Φ(δ/√6) + 2 Φ(δ/√2) Φ(δ/√6)
+
+    Guessing probability: 1/2.
     """
 
-    def __init__(self) -> None:
-        """Initialize a Duo-Trio discrimination method."""
-        super().__init__(name="duotrio")
-
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the Duo-Trio method.
+        """Psychometric function for the Duo-Trio method (Bi, 2015, eq. 2.2.4).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c.
         """
         x1 = d / np.sqrt(2)
         x2 = d / np.sqrt(6)
-        return 1 - norm.cdf(x1) - norm.cdf(x2) + 2 * norm.cdf(x1) * norm.cdf(x2)
+        return 1 - norm.cdf(x1) - norm.cdf(x2) + 2 * norm.cdf(x1) * norm.cdf(x2)  # type: ignore[no-any-return]
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
-
-        Returns:
-            Guessing rate for the Duo-Trio method.
-        """
+        """Chance-level probability for the Duo-Trio method (1/2)."""
         return 1 / 2
 
 
 class MPlusNMethod(DiscriminationMethod):
-    """M+N method.
+    """M + N discrimination method (Lockhart 1951).
 
-    The “M + N” method (Lockhart 1951):
+    M + N samples are presented: M samples of product A and N samples of product B.
+    The panelist divides them into two groups of A and B. There are two versions:
+    specified (panelist is told which group is A) and unspecified (Bi, 2015, §1.5.1i).
 
-    M + N samples with M sample A and N sample B are presented. The panelist is told to
-    divide the samples into two groups, of A and B. There are two versions of the
-    method: specified and unspecified.
+    This is a generalisation of many forced-choice methods, including m-AFC, Triangle,
+    and both Tetrad variants. For small M and N a binomial model applies; for larger
+    M and N (M = N > 3) a single set of samples can reach statistical significance
+    under a hypergeometric model (Bi, 2015, §2.5).
 
-    This is a generalization of many forced-choice discrimination methods, including
-    the Multiple-Alternative Forced Choice (m-AFC), Triangle, and Specified and
-    Unspecified Tetrad.
+    The psychometric function is estimated by Monte Carlo simulation (Bi, 2015, §2.5).
 
-    The “M + N” with larger M and N can be regarded as a specific discrimination method
-    with a new model. Unlike the conventional difference tests using the “M + N” with
-    small M and N based on a binomial model, the “M + N” with larger M and N (M = N > 3)
-    can reach a statistical significance in a single trial for only one “M + N” sample
-    set based on a hypergeometric model.
+    Guessing probability: 1/C(M+N, N) for specified or M > N; 2/C(M+N, N) otherwise.
     """
 
-    def __init__(self, m: int, n: int, specified: bool = False):
-        """Initialize a m+n discrimination method.
+    def __init__(self, m: int, n: int, specified: bool = False, *, seed: int | None = None) -> None:
+        """Initialize an M + N discrimination method.
 
         Args:
-            m: TODO.
-            n: TODO.
-            specified: TODO.
+            m: Number of samples from product A (must be ≥ n).
+            n: Number of samples from product B.
+            specified: If True, panelists are told which group is product A (specified
+                version); otherwise the unspecified version is used.
+            seed: Seed for the random number generator used in the Monte Carlo
+                simulation of the psychometric function. Pass an integer for
+                reproducible results; ``None`` (default) uses an unpredictable seed.
         """
-        c = "S" if specified else "U"
-        super().__init__(name=f"{m}+{n}({c})")
-
         self.m = m
         self.n = n
         self.specified = specified
-        self.psy_func = mplusn.mplusn_mc(m, n, specified=specified)
+        self.psy_func = mplusn.mplusn_mc(m, n, specified=specified, seed=seed)
 
     def psychometric_function(self, d: float) -> float:
-        """Psychometric function for the M+N method.
+        """Psychometric function for the M + N method (Monte Carlo estimate).
 
         Args:
-            d: The Thurstonian sensory distance.
+            d: Thurstonian discriminal distance d'.
 
         Returns:
-            Probability of correct response.
+            Probability of a correct response P_c (interpolated from simulation).
         """
         return self.psy_func(d)
 
     @property
     def guessing(self) -> float:
-        """Get guessing rate.
+        """Chance-level probability for the M + N method.
 
-        Returns:
-            Guessing rate for the M+N method.
+        Returns 1/C(M+N, N) for the specified version or when M > N, and
+        2/C(M+N, N) for the unspecified version when M = N (Bi, 2015, §2.5).
         """
         if self.m > self.n or self.specified:
-            return 1 / scipy.special.binom(self.m + self.n, self.n)
-        else:
-            return 2 / scipy.special.binom(self.m + self.n, self.n)
+            return float(1 / scipy.special.binom(self.m + self.n, self.n))
+        return float(2 / scipy.special.binom(self.m + self.n, self.n))
 
 
-METHOD: dict[str, type[DiscriminationMethod]] = {
-    "triangle": TriangleMethod,
-    "two_afc": TwoAFCMethod,
-    "three_afc": ThreeAFCMethod,
-    "four_afc": FourAFCMethod,
-    "duotrio": DuoTrioMethod,
-    "dualpair": DualPairMethod,
-    "utetrad": UnspecifiedTetrad,
-    "stetrad": SpecifiedTetradMethod,
-    "m_afc": MultipleAFCMethod,
-    "mplusn": MPlusNMethod,
-}
+TRIANGLE = TriangleMethod()
+TWO_AFC = TwoAFCMethod()
+THREE_AFC = ThreeAFCMethod()
+FOUR_AFC = FourAFCMethod()
+SPECIFIED_TETRAD = SpecifiedTetradMethod()
+UNSPECIFIED_TETRAD = UnspecifiedTetrad()
+DUAL_PAIR = DualPairMethod()
+DUO_TRIO = DuoTrioMethod()

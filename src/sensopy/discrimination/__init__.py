@@ -4,6 +4,14 @@ from __future__ import annotations
 
 from .discrimination import DiscriminationTest, Statistic, TestResults
 from .methods import (
+    DUAL_PAIR,
+    DUO_TRIO,
+    FOUR_AFC,
+    SPECIFIED_TETRAD,
+    THREE_AFC,
+    TRIANGLE,
+    TWO_AFC,
+    UNSPECIFIED_TETRAD,
     DualPairMethod,
     DuoTrioMethod,
     FourAFCMethod,
@@ -17,6 +25,14 @@ from .methods import (
 )
 
 __all__ = [
+    "DUAL_PAIR",
+    "DUO_TRIO",
+    "FOUR_AFC",
+    "SPECIFIED_TETRAD",
+    "THREE_AFC",
+    "TRIANGLE",
+    "TWO_AFC",
+    "UNSPECIFIED_TETRAD",
     "DiscriminationTest",
     "DualPairMethod",
     "DuoTrioMethod",
