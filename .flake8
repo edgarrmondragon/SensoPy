@@ -1,4 +1,0 @@
-[flake8]
-select = DAR
-per-file-ignores =
-    tests/*:DAR
