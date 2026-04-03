@@ -76,15 +76,7 @@ p-value = 0.1263
 
 ## Roadmap
 
-### Discrimination methods
-
-- Response-bias methods: A-Not A, A-Not AR, Same-Different (Bi, 2015, §4.4)
-- Double discrimination tests: Double 2-AFC, Double 3-AFC, Double Triangular, Double Duo-Trio (Bi, 2015, §7.3)
-
-### Test types
-
-- Multiple-sample discrimination tests (Bi, 2015, Ch. 8)
-- Replicated discrimination tests: beta-binomial, corrected beta-binomial, Dirichlet-multinomial models (Bi, 2015, Ch. 9–11)
+See [ROADMAP.md](ROADMAP.md).
 
 ## Credits
 
