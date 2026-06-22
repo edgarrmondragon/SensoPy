@@ -99,12 +99,12 @@ class DiscriminationTest:
         # Lower limits
         pc_lower = max(beta.ppf(alpha / 2, x, n - x + 1), pg)
         pd_lower = (pc_lower - pg) / (1 - pg)
-        d_prime_lower = fsolve(lambda d: self.method.psychometric_function(d) - pc_lower, 1.0)[0]  # type: ignore[arg-type,misc]
+        d_prime_lower = fsolve(lambda d: self.method.psychometric_function(d) - pc_lower, 1.0)[0]  # type: ignore[arg-type,misc]  # ty:ignore[invalid-argument-type]
 
         # Upper limits
         pc_upper = min(beta.ppf(1 - alpha / 2, x + 1, n - x), 1.0)
         pd_upper = (pc_upper - pg) / (1 - pg)
-        d_prime_upper = fsolve(lambda d: self.method.psychometric_function(d) - pc_upper, 1.0)[0]  # type: ignore[arg-type,misc]
+        d_prime_upper = fsolve(lambda d: self.method.psychometric_function(d) - pc_upper, 1.0)[0]  # type: ignore[arg-type,misc]  # ty:ignore[invalid-argument-type]
 
         return (
             Statistic(pc, pc_err, pc_lower, pc_upper),
@@ -143,7 +143,7 @@ class DiscriminationTest:
         pg = self.method.guessing
         pc = x / n
         pd = (pc - pg) / (1 - pg)
-        d_prime = fsolve(lambda d: self.method.psychometric_function(d) - pc, 1.0)[0]  # type: ignore[arg-type,misc]
+        d_prime = fsolve(lambda d: self.method.psychometric_function(d) - pc, 1.0)[0]  # type: ignore[arg-type,misc]  # ty:ignore[invalid-argument-type]
 
         def stats(x: int, n: int, pc: float, pg: float, alpha: float) -> tuple[float, float]:
             pc0 = pg + (1 - pg) * pd0
@@ -188,7 +188,7 @@ class DiscriminationTest:
         pg = self.method.guessing
         pc = x / n
         pd = (pc - pg) / (1 - pg)
-        d_prime = fsolve(lambda d: self.method.psychometric_function(d) - pc, 1.0)[0]  # type: ignore[arg-type,misc]
+        d_prime = fsolve(lambda d: self.method.psychometric_function(d) - pc, 1.0)[0]  # type: ignore[arg-type,misc]  # ty:ignore[invalid-argument-type]
 
         def stats(x: int, n: int, pc: float, pg: float, alpha: float) -> tuple[float, float]:
             pc0 = pg + (1 - pg) * pd0

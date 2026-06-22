@@ -63,7 +63,7 @@ fallback-version = "0.1.0.dev0"
 source = "vcs"
 
 [tool.ruff]
-line-length = 100
+line-length = 120
 preview = true
 [tool.ruff.lint]
 select = [
