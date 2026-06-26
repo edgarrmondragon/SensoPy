@@ -201,9 +201,9 @@ commands = [
 
 [tool.tox.env_run_base]
 description = "run tests on Python {py_dot_ver}"
+base_python_file = [ ".python-version" ]
 pip_pre = true
 dependency_groups = [ "tests" ]
 commands = [
   [ "coverage", "run", "-m", "pytest" ],
 ]
-base_python_file = [ ".python-version" ]
