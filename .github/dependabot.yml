@@ -8,7 +8,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: weekly
+      interval: monthly
     labels:
       - "dependencies"
     versioning-strategy: lockfile-only
@@ -28,7 +28,7 @@ updates:
   - package-ecosystem: pip
     directory: "/.github/workflows"
     schedule:
-      interval: monthly
+      interval: quarterly
     groups:
       ci:
         patterns:
@@ -39,7 +39,7 @@ updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: monthly
+      interval: quarterly
     groups:
       actions:
         patterns:
