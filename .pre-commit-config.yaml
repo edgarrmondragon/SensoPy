@@ -24,19 +24,19 @@ repos:
   - id: check-readthedocs
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.20
+  rev: v0.16.1
   hooks:
   - id: ruff-check
     args: [--fix, --exit-non-zero-on-fix, --show-fixes]
   - id: ruff-format
 
 - repo: https://github.com/pre-commit/pre-commit
-  rev: v4.6.0
+  rev: v4.6.1
   hooks:
   - id: validate_manifest
 
 - repo: https://github.com/tox-dev/pyproject-fmt
-  rev: v2.25.1
+  rev: v2.26.0
   hooks:
   - id: pyproject-fmt
 

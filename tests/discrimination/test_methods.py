@@ -24,7 +24,7 @@ def test_abstract_guessing() -> None:
     """Test abstract guessing property."""
 
     class _CustomPsychometric(DiscriminationMethod):
-        def psychometric_function(self, d: float) -> float:  # noqa: ARG002
+        def psychometric_function(self, d: float) -> float:  # ruff: ignore[unused-method-argument]
             return 0.5
 
     with pytest.raises(TypeError, match="abstract method"):
