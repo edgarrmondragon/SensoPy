@@ -185,7 +185,6 @@ commands = [
   [ "coverage", "xml" ],
 ]
 depends = [ "3.*" ]
-
 [tool.tox.env.lowest]
 description = "test lowest supported dependencies on Python {py_dot_ver}"
 base_python = "3.10"
@@ -198,7 +197,6 @@ commands = [
   [ "mypy", "src/sensopy", "tests" ],
   [ "ty", "check" ],
 ]
-
 [tool.tox.env_run_base]
 description = "run tests on Python {py_dot_ver}"
 base_python_file = [ ".python-version" ]

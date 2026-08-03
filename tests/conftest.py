@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     import pytest
 
 
-def pytest_report_header(config: pytest.Config) -> list[str]:  # noqa: ARG001
+def pytest_report_header(config: pytest.Config) -> list[str]:  # ruff: ignore[unused-function-argument]
     """Return a list of strings to be displayed in the header of the report."""
     return [
         f"SciPy version: {scipy.__version__}",
