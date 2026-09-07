@@ -32,10 +32,10 @@ dependencies = [
   "numpy>=1.24",
   "scipy>=1.10",
 ]
-[[project.authors]]
+[[project.maintainers]]
 name = "Edgar Ramírez-Mondragón"
 email = "edgarrm358@gmail.com"
-[[project.maintainers]]
+[[project.authors]]
 name = "Edgar Ramírez-Mondragón"
 email = "edgarrm358@gmail.com"
 [project.urls]
@@ -59,8 +59,8 @@ typing = [
 ]
 
 [tool.hatch.version]
-fallback-version = "0.1.0.dev0"
 source = "vcs"
+fallback-version = "0.1.0.dev0"
 
 [tool.ruff]
 line-length = 120
@@ -79,9 +79,9 @@ select = [
   "E",
   "ERA",
   "F",
-  "FURB",
   "FA",
   "FLY",
+  "FURB",
   "I",
   "ICN",
   "ISC",
@@ -142,26 +142,26 @@ minversion = "9"
 strict = true
 testpaths = [ "tests" ]
 
+[tool.coverage.run]
+source = [
+  "sensopy",
+]
+branch = true
+parallel = true
+relative_files = true
 [tool.coverage.paths]
 package = [
   "src/sensopy/",
   "*/site-packages/sensopy/",
 ]
 [tool.coverage.report]
-show_missing = true
 fail_under = 90
 exclude_also = [
   "@abstractmethod",
   "@abstractproperty",
   "if (t\\.)?TYPE_CHECKING:",
 ]
-[tool.coverage.run]
-branch = true
-parallel = true
-relative_files = true
-source = [
-  "sensopy",
-]
+show_missing = true
 
 [tool.tox]
 requires = [
