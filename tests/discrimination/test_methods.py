@@ -17,7 +17,7 @@ def test_abstract_psychometric_function() -> None:
             return 1 / 2
 
     with pytest.raises(TypeError, match="abstract method"):
-        _CustomGuessing()  # type: ignore[abstract]
+        _CustomGuessing()  # type: ignore[abstract]  # ty: ignore[call-non-callable]
 
 
 def test_abstract_guessing() -> None:
@@ -28,7 +28,7 @@ def test_abstract_guessing() -> None:
             return 0.5
 
     with pytest.raises(TypeError, match="abstract method"):
-        _CustomPsychometric()  # type: ignore[abstract]
+        _CustomPsychometric()  # type: ignore[abstract]  # ty: ignore[call-non-callable]
 
 
 def test_discriminator() -> None:
