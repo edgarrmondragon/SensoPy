@@ -13,10 +13,6 @@ if TYPE_CHECKING:
 
 SAMPLE_SIZE = 100000
 
-# ------------------------------------------------------------------------------
-# "M plus N" simulation
-# ------------------------------------------------------------------------------
-
 
 def mplusn_mc(
     m: int,
@@ -90,4 +86,4 @@ def mplusn_mc(
 
         prop.append(pc)
 
-    return interpolate.interp1d(delta, prop)  # type: ignore[return-value]
+    return interpolate.interp1d(delta, prop)  # type: ignore[return-value] # ty: ignore[invalid-return-type]
