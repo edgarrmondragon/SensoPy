@@ -1,5 +1,6 @@
 # SensoPy
 
+[![SPEC 0](https://img.shields.io/badge/SPEC-0-green)](https://scientific-python.org/specs/spec-0000/)
 [![Tests](https://github.com/edgarrmondragon/SensoPy/actions/workflows/tests.yml/badge.svg)](https://github.com/edgarrmondragon/SensoPy/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/edgarrmondragon/SensoPy/branch/master/graph/badge.svg?token=k3m3CmIACa)](https://codecov.io/gh/edgarrmondragon/SensoPy)
 

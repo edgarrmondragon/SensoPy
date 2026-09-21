@@ -15,11 +15,9 @@ keywords = [
   "triangle",
 ]
 license = "MIT"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
@@ -29,8 +27,8 @@ dynamic = [
   "version",
 ]
 dependencies = [
-  "numpy>=1.24",
-  "scipy>=1.10",
+  "numpy>=2.2",
+  "scipy>=1.15",
 ]
 [[project.maintainers]]
 name = "Edgar Ramírez-Mondragón"
@@ -101,8 +99,8 @@ select = [
 ]
 ignore = []
 per-file-ignores."tests/*" = [
-  "ANN201", # missing-return-type-undocumented-public-function
-  "S101",   # assert
+  "assert",
+  "missing-return-type-undocumented-public-function",
 ]
 unfixable = [
   "ERA",
@@ -113,7 +111,13 @@ flake8-annotations.suppress-dummy-args = true
 pydocstyle.convention = "google"
 
 [tool.pyproject-fmt]
+max_supported_python = "3.14"
 table_format = "long"
+
+[tool.typos.default.extend-words]
+# Don't correct the AB/BA etc. sample labels
+AB = "AB"
+BA = "BA"
 
 [tool.mypy]
 warn_redundant_casts = true
@@ -165,13 +169,13 @@ show_missing = true
 
 [tool.tox]
 requires = [
-  "tox>=4.52",
+  "tox>=4.63",
   "tox-uv>=1",
 ]
 env_list = [
   "coverage",
   { product = [
-    { prefix = "3.", start = 10 },
+    { prefix = "3.", start = 12 },
   ] },
   "lowest",
   "type",
@@ -187,7 +191,7 @@ commands = [
 depends = [ "3.*" ]
 [tool.tox.env.lowest]
 description = "test lowest supported dependencies on Python {py_dot_ver}"
-base_python = "3.10"
+base_python = "3.12"
 base_python_file = []
 uv_resolution = "lowest-direct"
 [tool.tox.env.type]
