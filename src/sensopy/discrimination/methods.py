@@ -100,7 +100,7 @@ class TriangleMethod(DiscriminationMethod):
 
         x = np.linspace(0, 200, 10000)
         y = _fi(x)
-        return trapezoid(y, x)  # type: ignore[no-any-return]  # type: ignore[no-any-return]
+        return trapezoid(y, x)  # type: ignore[no-any-return]
 
     @property
     def guessing(self) -> float:
