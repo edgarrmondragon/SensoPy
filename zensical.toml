@@ -18,6 +18,7 @@ nav = [
   { "How-to guides" = [
     { "Test for equivalence" = "how-to/equivalence-test.md" },
     { "Estimate power by simulation" = "how-to/estimate-power.md" },
+    { "Cite SensoPy" = "how-to/cite.md" },
   ] },
   { "Reference" = [
     { "Methods" = "reference/methods.md" },

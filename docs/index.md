@@ -24,7 +24,8 @@ The documentation is organised by what you are trying to do.
     Recipes for specific tasks.
 
     [Test for equivalence](how-to/equivalence-test.md) ·
-    [Estimate power by simulation](how-to/estimate-power.md)
+    [Estimate power by simulation](how-to/estimate-power.md) ·
+    [Cite SensoPy](how-to/cite.md)
 
 - **Reference**
 
