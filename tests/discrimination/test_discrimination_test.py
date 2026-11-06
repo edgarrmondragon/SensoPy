@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 import pytest
@@ -105,3 +105,41 @@ def test_equivalence_power_alpha_on_tail_boundary() -> None:
 
     res = DiscriminationTest(TWO_AFC).equivalence(x, n, pd0=0, conf_level=conf_level)
     assert res.power == pytest.approx(binom.cdf(2, n, x / n))
+
+
+def test_simulate_null_controls_false_positive_error() -> None:
+    """Under H0 the simulated rejection rate matches the exact Type I error, which is <= alpha."""
+    n, alpha = 40, 0.05
+    xs = np.arange(n + 1)
+    reject = 1 - binom.cdf(xs - 1, n, TRIANGLE.guessing) <= alpha
+    exact = float(binom.pmf(xs, n, TRIANGLE.guessing)[reject].sum())
+    assert exact <= alpha  # the exact test is conservative
+
+    res = DiscriminationTest(TRIANGLE).simulate(0.0, n, size=20_000, rng=0)
+    assert res.power == pytest.approx(exact, abs=0.01)
+
+
+@pytest.mark.parametrize(
+    ("kind", "pd0"),
+    [("difference", 0.0), ("equivalence", 0.5)],
+)
+def test_simulate_matches_exact_power(kind: Literal["difference", "equivalence"], pd0: float) -> None:
+    """Empirical power approaches the exact binomial power."""
+    n, d, alpha = 60, 1.5, 0.05
+    pc = TRIANGLE.psychometric_function(d)
+    pc0 = TRIANGLE.guessing + (1 - TRIANGLE.guessing) * pd0
+    xs = np.arange(n + 1)
+    reject = 1 - binom.cdf(xs - 1, n, pc0) <= alpha if kind == "difference" else binom.cdf(xs, n, pc0) <= alpha
+    exact = float(binom.pmf(xs, n, pc)[reject].sum())
+
+    res = DiscriminationTest(TRIANGLE).simulate(d, n, size=20_000, kind=kind, pd0=pd0, rng=1)
+    assert res.power == pytest.approx(exact, abs=0.02)
+
+
+def test_simulate_invalid() -> None:
+    """Invalid arguments raise ValueError."""
+    test = DiscriminationTest(TRIANGLE)
+    with pytest.raises(ValueError, match="kind must be"):
+        test.simulate(1.0, 10, kind="nope")  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
+    with pytest.raises(ValueError, match="size must be"):
+        test.simulate(1.0, 10, size=0)

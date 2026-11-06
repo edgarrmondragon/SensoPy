@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .discrimination import DiscriminationTest, Statistic, TestResults
+from .discrimination import DiscriminationTest, SimulationResults, Statistic, TestResults
 from .methods import (
     DUAL_PAIR,
     DUO_TRIO,
@@ -39,6 +39,7 @@ __all__ = [
     "FourAFCMethod",
     "MPlusNMethod",
     "MultipleAFCMethod",
+    "SimulationResults",
     "SpecifiedTetradMethod",
     "Statistic",
     "TestResults",
