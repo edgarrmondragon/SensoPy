@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import abc
+from typing import overload
 
 import numpy as np
 import numpy.typing as npt
@@ -64,6 +65,62 @@ class DiscriminationMethod(abc.ABC):
         pc = self.psychometric_function(d)
         pg = self.guessing
         return (pc - pg) / (1 - pg)
+
+    @overload
+    def simulate(
+        self,
+        d: float,
+        n: int,
+        size: None = None,
+        rng: np.random.Generator | int | None = None,
+    ) -> int: ...
+
+    @overload
+    def simulate(
+        self,
+        d: float,
+        n: int,
+        size: int,
+        rng: np.random.Generator | int | None = None,
+    ) -> npt.NDArray[np.int_]: ...
+
+    def simulate(
+        self,
+        d: float,
+        n: int,
+        size: int | None = None,
+        rng: np.random.Generator | int | None = None,
+    ) -> int | npt.NDArray[np.int_]:
+        """Simulate the number of correct responses in a discrimination test.
+
+        Each of the ``n`` panelists answers correctly with probability
+        P_c = ψ(d'), so the number of correct responses is distributed as
+        Binomial(n, P_c) (Bi, 2015, §2.3).
+
+        Args:
+            d: True Thurstonian discriminal distance d' (must be non-negative).
+            n: Number of panelists (trials) per simulated test.
+            size: Number of tests to simulate. If None, a single test is simulated
+                and a scalar is returned.
+            rng: A NumPy random generator, or a seed used to create one.
+
+        Returns:
+            The number of correct responses, or an array of them if ``size`` is given.
+
+        Raises:
+            ValueError: If ``d`` is negative or ``n`` is not positive.
+        """
+        if d < 0:
+            msg = "d' must be non-negative"
+            raise ValueError(msg)
+        if n < 1:
+            msg = "n must be a positive integer"
+            raise ValueError(msg)
+
+        generator = np.random.default_rng(rng)
+        pc = min(max(self.psychometric_function(d), 0.0), 1.0)
+        result = generator.binomial(n, pc, size=size)
+        return int(result) if size is None else result
 
 
 class TriangleMethod(DiscriminationMethod):

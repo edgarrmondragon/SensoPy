@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
+import numpy.typing as npt
 from scipy.optimize import fsolve
 from scipy.stats import beta, binom
 
@@ -32,6 +33,16 @@ class TestResults:
     pd: Statistic
     d_prime: Statistic
     p_value: float
+    alpha: float
+    power: float
+
+
+@dataclass(slots=True)
+class SimulationResults:
+    """Outcome of simulating many discrimination tests."""
+
+    x: npt.NDArray[np.int_]
+    p_values: npt.NDArray[np.float64]
     alpha: float
     power: float
 
@@ -204,3 +215,49 @@ class DiscriminationTest:
         pc_stats, pd_stats, d_prime_stats = self.limits(x, n, pc, pd, pg, d_prime, alpha)
 
         return TestResults(pg, pc_stats, pd_stats, d_prime_stats, p_value, alpha, power)
+
+    def simulate(
+        self,
+        d: float,
+        n: int,
+        size: int = 1000,
+        *,
+        kind: Literal["difference", "equivalence"] = "difference",
+        pd0: float = 0,
+        conf_level: float = 0.95,
+        rng: np.random.Generator | int | None = None,
+    ) -> SimulationResults:
+        """Simulate repeated discrimination tests and estimate the empirical power.
+
+        Draws ``size`` experiments of ``n`` panelists with true distance ``d``, computes
+        the one-tailed exact binomial p-value of each against ``pd0``, and reports the
+        fraction that reject the null hypothesis at ``alpha = 1 - conf_level``.
+
+        Args:
+            d: True Thurstonian distance d' used to generate the data.
+            n: Number of panelists per simulated test.
+            size: Number of tests to simulate (default 1000).
+            kind: ``"difference"`` (H1: P_c > P_c0) or ``"equivalence"`` (H1: P_c < P_c0).
+            pd0: Null-hypothesis proportion of discriminators (default 0).
+            conf_level: Confidence level (default 0.95).
+            rng: A NumPy random generator, or a seed used to create one.
+
+        Returns:
+            SimulationResults with the simulated counts, p-values, alpha and power.
+
+        Raises:
+            ValueError: If ``kind`` is not recognized or ``size`` is not positive.
+        """
+        if kind not in ("difference", "equivalence"):
+            msg = "kind must be 'difference' or 'equivalence'"
+            raise ValueError(msg)
+        if size < 1:
+            msg = "size must be a positive integer"
+            raise ValueError(msg)
+
+        alpha = 1 - conf_level
+        pg = self.method.guessing
+        pc0 = pg + (1 - pg) * pd0
+        x = self.method.simulate(d, n, size=size, rng=rng)
+        p_values = 1 - binom.cdf(x - 1, n, pc0) if kind == "difference" else binom.cdf(x, n, pc0)
+        return SimulationResults(x, p_values, alpha, float(np.mean(p_values <= alpha)))

@@ -208,5 +208,5 @@ base_python_file = [ ".python-version" ]
 pip_pre = true
 dependency_groups = [ "tests" ]
 commands = [
-  [ "coverage", "run", "-m", "pytest" ],
+  [ "coverage", "run", "-m", "pytest", { replace = "posargs", extend = true, substitute = true } ],
 ]
