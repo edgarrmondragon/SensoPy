@@ -50,8 +50,8 @@ jobs:
 
     - name: Test
       env:
-        PYTHON_VERSION: ${{ matrix.python-version }}
-      run: uvx tox run -e ${PYTHON_VERSION}
+        TOXENV: ${{ matrix.python-version }}
+      run: uvx tox run
     - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         include-hidden-files: true
