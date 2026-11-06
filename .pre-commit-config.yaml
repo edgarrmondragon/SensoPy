@@ -56,3 +56,18 @@ repos:
   rev: v1.32.0
   hooks:
     - id: zizmor
+
+- repo: https://github.com/astral-sh/uv-pre-commit
+  rev: 0.13.7
+  hooks:
+    - id: pip-compile
+      files: |
+        (?x)^(
+          pyproject.toml|
+          requirements/docs.requirements.txt
+        )$
+      args:
+        - pyproject.toml
+        - "--group=docs"
+        - "--python-version=3.14"
+        - "--output-file=requirements/docs.requirements.txt"
