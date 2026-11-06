@@ -16,5 +16,5 @@
 
 ## Analysis tools
 
-- Sample size / power planning (given target d' and desired power)
+- Sample size / power planning (given target d' and desired power) - https://github.com/edgarrmondragon/SensoPy/pull/253
 - Comparison of two d' estimates (hypothesis test and CI for d'₁ − d'₂)
