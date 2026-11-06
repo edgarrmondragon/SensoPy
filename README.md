@@ -36,11 +36,11 @@ p-value = 0.0007
 ```
 
 - **d' = 2.15** (95% CI: [1.13, 3.13]): estimated Thurstonian discriminal distance,
-  a method-independent measure of the sensory difference between the two products.
+    a method-independent measure of the sensory difference between the two products.
 - **p_d = 0.45** (95% CI: [0.16, 0.70]): an estimated 45% of the panel can reliably
-  detect the difference.
+    detect the difference.
 - **p-value = 0.0007**: strong evidence against H0; the products are perceptibly
-  different at any conventional significance level.
+    different at any conventional significance level.
 
 ### Equivalence test
 
@@ -68,12 +68,12 @@ p-value = 0.1263
 ```
 
 - **d' = 0.12** (95% CI: [0.00, 0.81]): small estimated sensory distance, consistent
-  with near-identical products.
+    with near-identical products.
 - **p_d = 0.07** (95% CI: [0.00, 0.43]): only ~7% of the panel estimated to reliably
-  discriminate the products.
+    discriminate the products.
 - **p-value = 0.13**: insufficient evidence to conclude equivalence at α = 0.05 with
-  pd0 = 0.30 (i.e., we cannot rule out that ≥ 30% of consumers can detect the
-  difference); a larger panel would be needed to meet that threshold.
+    pd0 = 0.30 (i.e., we cannot rule out that ≥ 30% of consumers can detect the
+    difference); a larger panel would be needed to meet that threshold.
 
 ## Roadmap
 

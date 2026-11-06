@@ -41,8 +41,13 @@ email = "edgarrm358@gmail.com"
 
 [dependency-groups]
 dev = [
+  { include-group = "docs" },
   { include-group = "tests" },
   { include-group = "typing" },
+]
+docs = [
+  "matplotlib>=3.10",
+  "zensical>=0.1",
 ]
 tests = [
   "coverage[toml]>=7.13",
@@ -53,6 +58,7 @@ typing = [
   "mypy>=1.20",
   "scipy-stubs>=1",
   "ty>=0.0.27",
+  { include-group = "docs" },
   { include-group = "tests" },
 ]
 
@@ -98,6 +104,9 @@ select = [
   "W",
 ]
 ignore = []
+per-file-ignores."scripts/*" = [
+  "ambiguous-unicode-character-string",
+]
 per-file-ignores."tests/*" = [
   "assert",
   "missing-return-type-undocumented-public-function",
@@ -115,6 +124,8 @@ max_supported_python = "3.15"
 table_format = "long"
 
 [tool.typos.default.extend-words]
+# numpy
+ND = "ND"  # e.g. NDArray
 # Don't correct the AB/BA etc. sample labels
 AB = "AB"
 BA = "BA"
@@ -189,6 +200,13 @@ commands = [
   [ "coverage", "xml" ],
 ]
 depends = [ "3.*" ]
+[tool.tox.env.docs]
+description = "build the documentation"
+dependency_groups = [ "docs" ]
+commands = [
+  [ "python", "scripts/generate_plots.py" ],
+  [ "zensical", "build", "--clean" ],
+]
 [tool.tox.env.lowest]
 description = "test lowest supported dependencies on Python {py_dot_ver}"
 base_python = "3.13"
