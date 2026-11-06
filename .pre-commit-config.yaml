@@ -5,6 +5,7 @@ ci:
   autoupdate_commit_msg: 'chore(deps): pre-commit autoupdate'
   skip:
   - check-dependabot
+  - pip-compile
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
