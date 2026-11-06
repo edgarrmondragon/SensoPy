@@ -44,6 +44,8 @@ repos:
   rev: 1.0.0
   hooks:
   - id: mdformat
+    additional_dependencies:
+    - mdformat-mkdocs
 
 - repo: https://github.com/crate-ci/typos
   rev: v1.52.0
