@@ -15,10 +15,9 @@ keywords = [
   "triangle",
 ]
 license = "MIT"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: 3.15",
@@ -176,7 +175,7 @@ requires = [
 env_list = [
   "coverage",
   { product = [
-    { prefix = "3.", start = 12, stop = 15 },
+    { prefix = "3.", start = 13, stop = 15 },
   ] },
   "lowest",
   "type",
@@ -192,7 +191,7 @@ commands = [
 depends = [ "3.*" ]
 [tool.tox.env.lowest]
 description = "test lowest supported dependencies on Python {py_dot_ver}"
-base_python = "3.12"
+base_python = "3.13"
 base_python_file = []
 uv_resolution = "lowest-direct"
 [tool.tox.env.type]
