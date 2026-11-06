@@ -193,7 +193,10 @@ class DiscriminationTest:
         def stats(x: int, n: int, pc: float, pg: float, alpha: float) -> tuple[float, float]:
             pc0 = pg + (1 - pg) * pd0
             p_value = binom.cdf(x, n, pc0)
-            xcrit = binom.ppf(alpha, n, pc0) + 1
+            # Largest count whose lower-tail p-value is still <= alpha
+            xcrit = binom.ppf(alpha, n, pc0)
+            if binom.cdf(xcrit, n, pc0) > alpha:
+                xcrit -= 1
             power = binom.cdf(xcrit, n, pc)
             return p_value, power
 
