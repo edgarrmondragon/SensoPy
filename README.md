@@ -79,6 +79,11 @@ p-value = 0.1263
 
 See [ROADMAP.md](ROADMAP.md).
 
+## Citing
+
+If you use SensoPy in your work, please cite it using [CITATION.cff](CITATION.cff);
+GitHub's "Cite this repository" button exports it as APA or BibTeX.
+
 ## Credits
 
 <ul>

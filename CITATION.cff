@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "SensoPy"
+abstract: "Python library for the design and analysis of sensory discrimination tests."
+authors:
+- family-names: "Ramírez Mondragón"
+  given-names: "Edgar"
+  orcid: "https://orcid.org/0000-0002-4182-0385"
+license: MIT
+repository-code: "https://github.com/edgarrmondragon/SensoPy"
+url: "https://github.com/edgarrmondragon/SensoPy"
+keywords:
+- discrimination
+- sensory
+- triangle
+references:
+- type: book
+  title: "Sensory Discrimination Tests and Measurements: Sensometrics in Sensory Evaluation"
+  edition: "2nd"
+  authors:
+  - family-names: "Bi"
+    given-names: "Jian"
+  publisher:
+    name: "Wiley-Blackwell"
+  year: 2015
