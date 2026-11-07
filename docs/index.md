@@ -49,7 +49,7 @@ The documentation is organised by what you are trying to do.
 ## Installation
 
 ```shell
-pip install git+https://github.com/edgarrmondragon/SensoPy.git
+pip install SensoPy
 ```
 
 SensoPy requires Python 3.13 or newer.
