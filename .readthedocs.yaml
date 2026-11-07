@@ -14,7 +14,7 @@ build:
     create_environment:
       - uv venv "${READTHEDOCS_VIRTUALENV_PATH}"
     install:
-      - UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv pip install -r requirements/docs.requirements.txt
+      - UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv pip install -r pylock.docs.toml
       - UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv pip install .
     build:
       html:
