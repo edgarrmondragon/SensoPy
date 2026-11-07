@@ -8,7 +8,7 @@ Python library for the design and analysis of sensory discrimination tests. I ha
 
 ## Installation
 
-`pip install git+https://github.com/edgarrmondragon/SensoPy.git`
+`pip install SensoPy`
 
 ## Usage
 
