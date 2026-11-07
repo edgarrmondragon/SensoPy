@@ -5,41 +5,12 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: monthly
-    labels:
-      - "dependencies"
-    versioning-strategy: lockfile-only
-    allow:
-      - dependency-type: "all"
-    groups:
-      development-dependencies:
-        dependency-type: development
-      runtime-dependencies:
-        dependency-type: production
-        update-types:
-          - "minor"
-          - "patch"
-    cooldown:
-      default-days: 7
-
-  - package-ecosystem: pip
-    directory: "/.github/workflows"
-    schedule:
-      interval: quarterly
-    groups:
-      ci:
-        patterns:
-          - "*"
-    cooldown:
-      default-days: 7
-
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: quarterly
+    labels:
+      - skip-changelog
     groups:
       actions:
         patterns:

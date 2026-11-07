@@ -1,0 +1,108 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+
+categories:
+  - type: 'pre-exclude'
+    when:
+      label: 'skip-changelog'
+
+  - title: '🚀 Added'
+    when:
+      labels:
+        - 'feature'
+        - 'enhancement'
+
+  - title: '⚠️ Breaking Changes'
+    when:
+      labels:
+        - 'major'
+
+  - title: '🏎️ Performance'
+    when:
+      label: 'performance'
+
+  - title: '🔄 Changed'
+    when:
+      label: 'changed'
+
+  - title: '🐛 Fixed'
+    when:
+      labels:
+        - 'bug'
+        - 'fix'
+
+  - title: '📚 Documentation'
+    when:
+      label: 'documentation'
+
+  - title: '🧰 Internal'
+    when:
+      labels:
+        - 'internal'
+
+  - title: '🛠️ Maintenance'
+    when:
+      labels:
+        - 'chore'
+        - 'dependencies'
+
+  - type: 'version-resolver'
+    semver-increment: 'major'
+    when:
+      label: 'major'
+
+  - type: 'version-resolver'
+    semver-increment: 'minor'
+    when:
+      labels:
+        - 'feature'
+        - 'enhancement'
+        - 'changed'
+
+  - type: 'version-resolver'
+    semver-increment: 'patch'
+    when:
+      labels:
+        - 'fix'
+        - 'bug'
+        - 'chore'
+        - 'internal'
+        - 'dependencies'
+        - 'documentation'
+        - 'performance'
+
+autolabeler:
+  - label: 'major'
+    title:
+      - '/^([A-Za-z]+)(\(.+\))?!:/i'
+  - label: 'feature'
+    title:
+      - '/^feat(\(.+\))?:/i'
+  - label: 'fix'
+    title:
+      - '/^fix(\(.+\))?:/i'
+  - label: 'performance'
+    title:
+      - '/^perf(\(.+\))?:/i'
+  - label: 'internal'
+    title:
+      - '/^refactor(\(.+\))?:/i'
+  - label: 'documentation'
+    title:
+      - '/^docs(\(.+\))?:/i'
+  - label: 'dependencies'
+    title:
+      - '/^chore\(deps\)(\(.+\))?:/i'
+  - label: 'chore'
+    title:
+      - '/^(chore|ci|test|build)(\(.+\))?:/i'
+
+category-template: '### $TITLE'
+change-template: '- $TITLE [#$NUMBER](https://github.com/edgarrmondragon/SensoPy/pull/$NUMBER) (from @$AUTHOR)'
+change-title-escapes: '\<*_&'
+
+version-resolver:
+  default: patch
+
+template: |
+  $CHANGES
