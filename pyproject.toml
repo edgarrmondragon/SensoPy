@@ -45,7 +45,10 @@ email = "edgarrm358@gmail.com"
 name = "Edgar Ramírez-Mondragón"
 email = "edgarrm358@gmail.com"
 [project.urls]
+Documentation = "https://sensopy.readthedocs.io/"
 "Issue Tracker" = "https://github.com/edgarrmondragon/SensoPy/issues"
+Releases = "https://github.com/edgarrmondragon/SensoPy/releases"
+Source = "https://github.com/edgarrmondragon/SensoPy"
 
 [dependency-groups]
 dev = [
