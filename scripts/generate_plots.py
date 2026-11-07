@@ -50,6 +50,7 @@ mpl.rcParams.update(
         "axes.spines.right": False,
         "font.size": 11,
         "svg.fonttype": "none",
+        "svg.hashsalt": "04304ad1-5950-4c2a-b5ea-58eb3234aed2",
         "legend.frameon": False,
     },
 )
@@ -58,7 +59,7 @@ mpl.rcParams.update(
 def _save(fig: plt.Figure, name: str) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
-    fig.savefig(OUT / name, format="svg")
+    fig.savefig(OUT / name, format="svg", metadata={"Date": None})
     plt.close(fig)
 
 

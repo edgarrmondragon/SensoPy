@@ -16,6 +16,7 @@ repos:
   - id: check-yaml
   - id: end-of-file-fixer
   - id: trailing-whitespace
+    exclude: ^docs/assets/.*\.svg$
 
 - repo: https://github.com/python-jsonschema/check-jsonschema
   rev: 0.39.0
