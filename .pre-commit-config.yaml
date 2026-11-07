@@ -62,13 +62,12 @@ repos:
   rev: 0.13.7
   hooks:
     - id: pip-compile
-      files: |
-        (?x)^(
-          pyproject.toml|
-          requirements/docs.requirements.txt
-        )$
+      name: pip-compile pylock.docs.toml
+      files: ^(pyproject\.toml|pylock\.docs\.toml)$
       args:
         - pyproject.toml
         - "--group=docs"
+        - "--universal"
         - "--python-version=3.14"
-        - "--output-file=requirements/docs.requirements.txt"
+        - "--format=pylock.toml"
+        - "--output-file=pylock.docs.toml"
