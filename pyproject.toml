@@ -156,7 +156,6 @@ warn_unused_configs = true
 [tool.pytest]
 addopts = [
   "-ra",
-  "-vvv",
   "--durations=3",
 ]
 filterwarnings = [
@@ -237,7 +236,13 @@ base_python_file = [ ".python-version" ]
 pip_pre = true
 dependency_groups = [ "tests" ]
 commands = [
-  [ "coverage", "run", "-m", "pytest", { replace = "posargs", extend = true, substitute = true } ],
+  [
+    "coverage",
+    "run",
+    "-m",
+    "pytest",
+    { replace = "posargs", default = [ "--quiet" ], extend = true, substitute = true }
+  ],
 ]
 [tool.tox.gh.python]
 "3.15" = [ "type", "3.15" ]
