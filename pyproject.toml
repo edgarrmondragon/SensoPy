@@ -216,7 +216,7 @@ depends = [ "3.*" ]
 description = "build the documentation"
 dependency_groups = [ "docs" ]
 commands = [
-  [ "python", "scripts/generate_plots.py" ],
+  [ "python", "-I", "scripts/generate_plots.py" ],
   [ "zensical", "build", "--clean" ],
 ]
 [tool.tox.env.lowest]
