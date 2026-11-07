@@ -23,6 +23,24 @@ if TYPE_CHECKING:
 
 
 @pytest.mark.parametrize(
+    "method",
+    [
+        pytest.param(TWO_AFC, id="two_afc"),
+        pytest.param(THREE_AFC, id="three_afc"),
+        pytest.param(FOUR_AFC, id="four_afc"),
+        pytest.param(DUO_TRIO, id="duotrio"),
+        pytest.param(TRIANGLE, id="triangle"),
+        pytest.param(UNSPECIFIED_TETRAD, id="utetrad"),
+        pytest.param(SPECIFIED_TETRAD, id="stetrad"),
+        pytest.param(DUAL_PAIR, id="dualpair"),
+    ],
+)
+def test_psychometric_function_at_d0(method: DiscriminationMethod) -> None:
+    """P_c at d'=0 matches P_g."""
+    assert method.psychometric_function(0.0) == pytest.approx(method.guessing, abs=1e-3)
+
+
+@pytest.mark.parametrize(
     ("method", "expected_pc"),
     [
         pytest.param(TWO_AFC, 0.7602, id="two_afc"),

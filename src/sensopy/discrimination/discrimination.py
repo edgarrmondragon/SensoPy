@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 import numpy.typing as npt
-from scipy.optimize import fsolve
+from scipy.optimize import brentq
 from scipy.stats import beta, binom
 
 if TYPE_CHECKING:
@@ -58,6 +58,24 @@ class DiscriminationTest:
     (Bi, 2015, §2.3).
     """
 
+    def _solve_d_prime(self, pc: float, d_max: float = 10.0) -> float:
+        """Invert the psychometric function for a given proportion correct.
+
+        The psychometric function is monotonically increasing from the guessing
+        probability at d' = 0 towards 1, so the root is bracketed and found with
+        Brent's method. Proportions at or beyond the boundaries have no finite
+        interior root and map to 0 and infinity respectively.
+
+        Returns:
+            The Thurstonian distance d-prime for the given P_c.
+        """
+        f = self.method.psychometric_function
+        if pc <= self.method.guessing:
+            return 0.0
+        if pc >= 1.0 or f(d_max) <= pc:
+            return float("inf")
+        return brentq(lambda d: f(d) - pc, 0.0, d_max)
+
     def __init__(self, method: DiscriminationMethod) -> None:
         """Initialize a discrimination test.
 
@@ -102,20 +120,24 @@ class DiscriminationTest:
         """
         pc_err = np.sqrt(pc * (1 - pc) / n)
         pd_err = pc_err / (1 - pg)
-        dx = 1e-6
-        f = self.method.psychometric_function
-        der = (f(d_prime + dx) - f(d_prime - dx)) / (2 * dx)
-        d_prime_err = pc_err / der
+        # The delta method breaks down at the boundaries, where d' is 0 (flat
+        # psychometric function) or infinite.
+        d_prime_err = float("inf")
+        if 0 < d_prime < float("inf"):
+            dx = 1e-6
+            f = self.method.psychometric_function
+            der = (f(d_prime + dx) - f(d_prime - dx)) / (2 * dx)
+            d_prime_err = pc_err / der
 
         # Lower limits
-        pc_lower = max(beta.ppf(alpha / 2, x, n - x + 1), pg)
+        pc_lower = max(beta.ppf(alpha / 2, x, n - x + 1) if x > 0 else 0.0, pg)
         pd_lower = (pc_lower - pg) / (1 - pg)
-        d_prime_lower = fsolve(lambda d: self.method.psychometric_function(d) - pc_lower, 1.0)[0]  # type: ignore[arg-type,misc]  # ty:ignore[invalid-argument-type]
+        d_prime_lower = self._solve_d_prime(pc_lower)
 
         # Upper limits
-        pc_upper = min(beta.ppf(1 - alpha / 2, x + 1, n - x), 1.0)
+        pc_upper = min(beta.ppf(1 - alpha / 2, x + 1, n - x) if x < n else 1.0, 1.0)
         pd_upper = (pc_upper - pg) / (1 - pg)
-        d_prime_upper = fsolve(lambda d: self.method.psychometric_function(d) - pc_upper, 1.0)[0]  # type: ignore[arg-type,misc]  # ty:ignore[invalid-argument-type]
+        d_prime_upper = self._solve_d_prime(pc_upper)
 
         return (
             Statistic(pc, pc_err, pc_lower, pc_upper),
@@ -154,7 +176,7 @@ class DiscriminationTest:
         pg = self.method.guessing
         pc = x / n
         pd = (pc - pg) / (1 - pg)
-        d_prime = fsolve(lambda d: self.method.psychometric_function(d) - pc, 1.0)[0]  # type: ignore[arg-type,misc]  # ty:ignore[invalid-argument-type]
+        d_prime = self._solve_d_prime(pc)
 
         def stats(x: int, n: int, pc: float, pg: float, alpha: float) -> tuple[float, float]:
             pc0 = pg + (1 - pg) * pd0
@@ -199,7 +221,7 @@ class DiscriminationTest:
         pg = self.method.guessing
         pc = x / n
         pd = (pc - pg) / (1 - pg)
-        d_prime = fsolve(lambda d: self.method.psychometric_function(d) - pc, 1.0)[0]  # type: ignore[arg-type,misc]  # ty:ignore[invalid-argument-type]
+        d_prime = self._solve_d_prime(pc)
 
         def stats(x: int, n: int, pc: float, pg: float, alpha: float) -> tuple[float, float]:
             pc0 = pg + (1 - pg) * pd0
