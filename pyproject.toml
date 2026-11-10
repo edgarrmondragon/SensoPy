@@ -160,7 +160,6 @@ addopts = [
 ]
 filterwarnings = [
   "error",
-  "once:The iteration is not making good progress:RuntimeWarning",
 ]
 log_level = "INFO"
 minversion = "9"

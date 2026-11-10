@@ -143,3 +143,48 @@ def test_simulate_invalid() -> None:
         test.simulate(1.0, 10, kind="nope")  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
     with pytest.raises(ValueError, match="size must be"):
         test.simulate(1.0, 10, size=0)
+
+
+@pytest.mark.parametrize("method", [TRIANGLE, TWO_AFC, SPECIFIED_TETRAD, MPlusNMethod(4, 3, seed=0)])
+def test_solve_d_prime_round_trip(method: DiscriminationMethod) -> None:
+    """Interior proportions are inverted exactly."""
+    test = DiscriminationTest(method)
+    for d in (0.5, 1.0, 3.0):
+        pc = method.psychometric_function(d)
+        assert method.psychometric_function(test._solve_d_prime(pc)) == pytest.approx(pc)
+
+
+@pytest.mark.parametrize("method", [TRIANGLE, TWO_AFC, SPECIFIED_TETRAD, MPlusNMethod(4, 3, seed=0)])
+def test_solve_d_prime_lower_boundary(method: DiscriminationMethod) -> None:
+    """Proportions at or below P(d'=0) give d' = 0, including numerical noise above guessing."""
+    test = DiscriminationTest(method)
+    f0 = method.psychometric_function(0.0)
+    assert test._solve_d_prime(0.0) == pytest.approx(0.0)
+    assert test._solve_d_prime(method.guessing) == pytest.approx(0.0)
+    assert test._solve_d_prime(f0) == pytest.approx(0.0)
+    # Triangle's P(d'=0) sits slightly above its guessing probability
+    assert test._solve_d_prime(f0 - 1e-9) == pytest.approx(0.0)
+
+
+@pytest.mark.parametrize("method", [TRIANGLE, TWO_AFC, SPECIFIED_TETRAD, MPlusNMethod(4, 3, seed=0)])
+def test_solve_d_prime_upper_boundary(method: DiscriminationMethod) -> None:
+    """Proportions of 1, or beyond what d_max reaches, give an infinite d'."""
+    test = DiscriminationTest(method)
+    d_max = 10.0
+    assert test._solve_d_prime(1.0) == float("inf")
+    just_below_one = (method.psychometric_function(d_max) + 1) / 2  # unreachable within d_max
+    assert test._solve_d_prime(just_below_one, d_max=d_max) == float("inf")
+
+
+@pytest.mark.parametrize("method", [TRIANGLE, TWO_AFC, MPlusNMethod(4, 3, seed=0)])
+@pytest.mark.parametrize("kind", ["all_wrong", "all_correct"])
+def test_difference_boundary_results(method: DiscriminationMethod, kind: str) -> None:
+    """All-wrong and all-correct results give boundary d' limits instead of failing."""
+    n = 30
+    res = DiscriminationTest(method).difference(0 if kind == "all_wrong" else n, n)
+    if kind == "all_wrong":
+        assert res.d_prime.estimate == res.d_prime.lower == pytest.approx(0.0)
+        assert res.d_prime.stderr == float("inf")
+    else:
+        assert res.d_prime.estimate == res.d_prime.upper == float("inf")
+        assert 0 < res.d_prime.lower < float("inf")
