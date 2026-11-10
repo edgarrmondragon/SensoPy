@@ -61,16 +61,18 @@ class DiscriminationTest:
     def _solve_d_prime(self, pc: float, d_max: float = 10.0) -> float:
         """Invert the psychometric function for a given proportion correct.
 
-        The psychometric function is monotonically increasing from the guessing
-        probability at d' = 0 towards 1, so the root is bracketed and found with
-        Brent's method. Proportions at or beyond the boundaries have no finite
-        interior root and map to 0 and infinity respectively.
+        The psychometric function increases from P_c(0) towards 1, so the root is
+        bracketed on [0, d_max] and found with Brent's method. Proportions at or
+        below P_c(0) map to 0 and those at or above 1, or beyond P_c(d_max),
+        map to infinity. P_c(0) is compared directly instead of the guessing
+        probability because numerical integration leaves it slightly above
+        guessing for some methods (e.g. triangle).
 
         Returns:
             The Thurstonian distance d-prime for the given P_c.
         """
         f = self.method.psychometric_function
-        if pc <= self.method.guessing:
+        if pc <= f(0.0):
             return 0.0
         if pc >= 1.0 or f(d_max) <= pc:
             return float("inf")
