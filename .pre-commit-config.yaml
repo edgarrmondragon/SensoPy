@@ -72,3 +72,21 @@ repos:
         - "--python-version=3.14"
         - "--format=pylock.toml"
         - "--output-file=pylock.docs.toml"
+
+- repo: https://github.com/adamtheturtle/doccmd-pre-commit
+  rev: v2026.9.16.1
+  hooks:
+  - id: doccmd
+    name: Ruff check fix docs
+    language: python
+    alias: ruff-check-fix-docs
+    args:
+    - --language
+    - python
+    - --no-pad-file
+    - --no-pad-groups
+    - --command
+    - ruff check --fix
+    - docs/
+    additional_dependencies:
+    - ruff==0.17.4

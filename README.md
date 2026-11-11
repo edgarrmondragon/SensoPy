@@ -20,8 +20,7 @@ One-tailed test of H0: p_d = 0 (no difference) against H1: p_d > 0 (a difference
 exists). 19 correct responses out of 30 panelists using the Triangle method:
 
 ```python
-from sensopy import DiscriminationTest
-from sensopy.discrimination import TRIANGLE
+from sensopy.discrimination import TRIANGLE, DiscriminationTest
 
 test = DiscriminationTest(TRIANGLE)
 result = test.difference(19, 30)

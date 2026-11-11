@@ -8,7 +8,6 @@ import numpy as np
 import pytest
 from scipy.stats import binom
 
-from sensopy import DiscriminationTest
 from sensopy.discrimination import (
     DUAL_PAIR,
     DUO_TRIO,
@@ -18,6 +17,7 @@ from sensopy.discrimination import (
     TRIANGLE,
     TWO_AFC,
     UNSPECIFIED_TETRAD,
+    DiscriminationTest,
     MPlusNMethod,
     MultipleAFCMethod,
 )

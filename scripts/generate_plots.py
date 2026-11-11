@@ -19,7 +19,6 @@ from scipy.stats import binom, norm
 mpl.use("Agg")
 import matplotlib.pyplot as plt
 
-from sensopy import DiscriminationTest
 from sensopy.discrimination import (
     DUO_TRIO,
     FOUR_AFC,
@@ -27,6 +26,7 @@ from sensopy.discrimination import (
     TRIANGLE,
     TWO_AFC,
     UNSPECIFIED_TETRAD,
+    DiscriminationTest,
 )
 
 OUT = Path(__file__).resolve().parent.parent / "docs" / "assets" / "plots"
