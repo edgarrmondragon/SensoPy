@@ -63,6 +63,7 @@ docs = [
 tests = [
   "coverage[toml]>=7.13",
   "pytest>=9",
+  "pytest-codspeed>=4",
   "pytest-github-actions-annotate-failures>=0.4",
 ]
 typing = [
