@@ -115,6 +115,11 @@ select = [
   "W",
 ]
 ignore = []
+per-file-ignores."**/*_md_*.py" = [
+  "undefined-name",
+  "undocumented-public-module",
+  "useless-expression",
+]
 per-file-ignores."scripts/*" = [
   "ambiguous-unicode-character-string",
 ]

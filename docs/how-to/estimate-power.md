@@ -45,7 +45,7 @@ Set `kind="equivalence"` and the threshold `pd0`. Here the true d′ is 0.3 and 
 panel has 100 people:
 
 ```python
-from sensopy.discrimination import DiscriminationTest, TWO_AFC
+from sensopy.discrimination import TWO_AFC, DiscriminationTest
 
 sim = DiscriminationTest(TWO_AFC).simulate(
     d=0.3,
