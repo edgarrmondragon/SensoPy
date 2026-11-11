@@ -19,8 +19,7 @@ Create a `DiscriminationTest` for the triangle method and call `difference()` wi
 number of correct responses and the number of panelists:
 
 ```python
-from sensopy import DiscriminationTest
-from sensopy.discrimination import TRIANGLE
+from sensopy.discrimination import TRIANGLE, DiscriminationTest
 
 test = DiscriminationTest(TRIANGLE)
 result = test.difference(19, 30)

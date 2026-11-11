@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from sensopy import DiscriminationTest
 from sensopy.discrimination import (
     DUAL_PAIR,
     DUO_TRIO,
@@ -16,6 +15,7 @@ from sensopy.discrimination import (
     TRIANGLE,
     TWO_AFC,
     UNSPECIFIED_TETRAD,
+    DiscriminationTest,
 )
 
 if TYPE_CHECKING:

@@ -8,8 +8,7 @@ significance for a given panel size, before you run it.
 Suppose you expect a true d′ of 1.5 and plan a triangle test with 50 panelists:
 
 ```python
-from sensopy import DiscriminationTest
-from sensopy.discrimination import TRIANGLE
+from sensopy.discrimination import TRIANGLE, DiscriminationTest
 
 test = DiscriminationTest(TRIANGLE)
 sim = test.simulate(d=1.5, n=50, size=2000, rng=42)
@@ -46,7 +45,7 @@ Set `kind="equivalence"` and the threshold `pd0`. Here the true d′ is 0.3 and 
 panel has 100 people:
 
 ```python
-from sensopy.discrimination import TWO_AFC
+from sensopy.discrimination import DiscriminationTest, TWO_AFC
 
 sim = DiscriminationTest(TWO_AFC).simulate(
     d=0.3,

@@ -13,8 +13,7 @@ value depends on how costly a noticeable change would be.
 ## Run the test
 
 ```python
-from sensopy import DiscriminationTest
-from sensopy.discrimination import TWO_AFC
+from sensopy.discrimination import DiscriminationTest, TWO_AFC
 
 test = DiscriminationTest(TWO_AFC)
 result = test.equivalence(16, 30, pd0=0.30)
