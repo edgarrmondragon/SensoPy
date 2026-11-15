@@ -86,4 +86,4 @@ def mplusn_mc(
 
         prop.append(pc)
 
-    return interpolate.interp1d(delta, prop)  # type: ignore[return-value] # ty: ignore[invalid-return-type]
+    return interpolate.interp1d(delta, prop)  # type: ignore[return-value] # ty: ignore[invalid-explicit-return]

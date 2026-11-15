@@ -68,6 +68,7 @@ tests = [
 ]
 typing = [
   "mypy>=1.20",
+  "pyrefly>=1.4.1",
   "scipy-stubs>=1",
   "ty>=0.0.27",
   { include-group = "docs" },
@@ -159,6 +160,19 @@ enable_error_code = [
 strict = true
 warn_unused_configs = true
 
+[tool.pyrefly]
+check-unannotated-defs = true
+infer-return-types = "never"
+preset = "legacy"
+[tool.pyrefly.errors]
+implicit-any-parameter = "error"
+redundant-condition = "error"
+no-any-return = "error"
+redundant-cast = "warn"
+unannotated-return = "error"
+implicit-any = "error"
+method-assign = "error"
+
 [tool.pytest]
 addopts = [
   "-ra",
@@ -234,6 +248,7 @@ dependency_groups = [ "typing" ]
 commands = [
   [ "mypy", "src/sensopy", "tests" ],
   [ "ty", "check" ],
+  [ "pyrefly", "check", "src/sensopy", "tests" ],
 ]
 [tool.tox.env_run_base]
 description = "run tests on Python {py_dot_ver}"
